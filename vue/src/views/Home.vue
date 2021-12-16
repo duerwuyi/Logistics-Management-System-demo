@@ -8,7 +8,7 @@
     </div>
 <!--    搜索区域-->
     <div style="margin: 10px 0">
-      <el-input v-model="search" placeholder="Please input"  style="width: 20%"/>
+      <el-input v-model="search" placeholder="Please input"  style="width: 20%" clearable />
       <el-button type="primary" style="margin-left: 7px" @click="load">查询</el-button>
     </div>
 
@@ -22,7 +22,7 @@
       <el-table-column prop="address" label="地址" />
       <el-table-column label="Operations">
         <template #default="scope">
-          <el-button size="mini" @click="handleEdit(scope.$index, scope.row)">Edit</el-button>
+          <el-button size="mini" @click="handleEdit(scope.row)">Edit</el-button>
           <el-popconfirm title="Are you sure to delete this?">
             <template #reference>
               <el-button size="mini" type="danger">Delete</el-button>
@@ -78,6 +78,7 @@
 
 
 import request from "../utils/request";
+import {ElMessage} from "element-plus";
 
 export default {
   name: 'Home',
@@ -109,19 +110,52 @@ export default {
           pageSize:10,
           search : this.search,
         },
+
       }).then(res => {
         this.tableData=res.data.records
         this.total = res.data.total
-      })
-    },
-    save(){
-      this.dialogVisible = false
-      request.post("/api/user",this.form).then(res => {
         console.log(res)
       })
     },
-    handleEdit(index, row) {
-      console.log(index, row)
+    save(){
+      if(this.form.id){
+        request.put("/api/user",this.form).then(res => {
+          console.log(res)
+          if(res.code == "0"){
+            ElMessage({
+              type: 'success',
+              message: '修改成功',
+            })
+          }else{
+            ElMessage({
+              type: 'error',
+              message: res.msg,
+            })
+          }
+        })
+      }
+      else{
+        request.post("/api/user",this.form).then(res => {
+          console.log(res)
+          if(res.code == "0"){
+            ElMessage({
+              type: 'success',
+              message: '添加成功',
+            })
+          }else{
+            ElMessage({
+              type: 'error',
+              message: res.msg,
+            })
+          }
+        })
+      }
+      this.dialogVisible = false
+      this.load()
+    },
+    handleEdit(row) {
+      this.form = JSON.parse(JSON.stringify(row))
+      this.dialogVisible = true
     },
     handleDelete(index, row) {
       console.log(index, row)
