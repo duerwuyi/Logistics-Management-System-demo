@@ -23,7 +23,7 @@
       <el-table-column label="Operations">
         <template #default="scope">
           <el-button size="mini" @click="handleEdit(scope.row)">Edit</el-button>
-          <el-popconfirm title="Are you sure to delete this?">
+          <el-popconfirm title="Are you sure to delete this?" @confirm="HandleDelete(scope.row.id)">
             <template #reference>
               <el-button size="mini" type="danger">Delete</el-button>
             </template>
@@ -157,14 +157,26 @@ export default {
       this.form = JSON.parse(JSON.stringify(row))
       this.dialogVisible = true
     },
-    handleDelete(index, row) {
-      console.log(index, row)
-    },
-    handleSizeChange(){
-
+    HandleDelete(id) {
+      console.log(id)
+      request.delete("/api/user/" + id).then(res => {
+        console.log(res)
+        if(res.code == "0"){
+          ElMessage({
+            type: 'success',
+            message: '删除成功',
+          })
+        }else{
+          ElMessage({
+            type: 'error',
+            message: res.msg,
+          })
+        }
+      })
+      this.load()
     },
     handleCurrentChange(){
-
+      this.load()
     },
   },
 }
