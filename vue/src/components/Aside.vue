@@ -1,17 +1,18 @@
 <template>
   <el-menu
       style="width: 200px; min-height: calc(100vh - 50px) "
-      default-active="1"
+      :default-active="path"
+      router
       class="el-menu-vertical-demo">
-    <el-menu-item index="user" :route="{path : '/'}">
+    <el-menu-item index="/home">
         <el-icon><location /></el-icon>
         <span>（用户）表单管理</span>
     </el-menu-item>
-    <el-menu-item index="2">
+    <el-menu-item index="">
       <el-icon><icon-menu /></el-icon>
       <span>应用</span>
     </el-menu-item>
-    <el-menu-item index="4">
+    <el-menu-item index="">
       <el-icon><setting /></el-icon>
       <span>设置</span>
     </el-menu-item>
@@ -19,7 +20,6 @@
 </template>
 
 <script>
-import { defineComponent } from 'vue'
 import {
   Location,
   Document,
@@ -27,7 +27,13 @@ import {
   Setting,
 } from '@element-plus/icons'
 
-export default defineComponent({
+export default ({
+  name:"Aside",
+  data(){
+    return{
+      path:this.$route.path
+    }
+  },
   components: {
     Location,
     Document,

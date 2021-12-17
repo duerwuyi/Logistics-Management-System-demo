@@ -19,6 +19,16 @@ public class UserController {
     @Resource
     UserMapper userMapper;
 
+    @PostMapping("/login")
+    public Result<?> login(@RequestBody User user){
+        User person = userMapper.selectOne(Wrappers.<User>lambdaQuery()
+                .eq(User::getUsername,user.getUsername()).eq(User::getPassword,user.getPassword()));
+        if(person == null){
+            return Result.error("-1","用户名或密码错误");
+        }
+        return Result.success(person);
+    }
+
     @PostMapping
     public Result<?> save(@RequestBody User user){
         if(user.getPassword() == null){

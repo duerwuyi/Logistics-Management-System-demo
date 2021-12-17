@@ -1,4 +1,5 @@
 import axios from 'axios'
+import router from "../router";
 
 const request = axios.create({
     timeout: 5000
@@ -9,8 +10,14 @@ const request = axios.create({
 // 比如统一加token，对请求参数统一加密
 request.interceptors.request.use(config => {
     config.headers['Content-Type'] = 'application/json;charset=utf-8';
-
     // config.headers['token'] = user.token;  // 设置请求头
+
+    //取出sessionStorage里的缓存信息
+    let userJson = sessionStorage.getItem("user")
+    if(!userJson){
+        router.push("/login")
+    }
+
     return config
 }, error => {
     return Promise.reject(error)
