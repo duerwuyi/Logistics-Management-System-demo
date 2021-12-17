@@ -5,7 +5,7 @@
       <div style="width: 100px">
         <el-dropdown>
          <span class="el-dropdown-link">
-         昵称：{{user.nickName}}
+         {{user.nickName}}
            <el-icon class="el-icon--right">
              <arrow-down />
            </el-icon>
@@ -37,7 +37,11 @@ export default {
   },
   created() {
     let userStr = sessionStorage.getItem("user")
-    this.user = JSON.parse(userStr)
+    if(userStr){
+      this.user = JSON.parse(userStr)
+    }else{
+     this.user = "无该用户"
+    }
   }
 }
 </script>
