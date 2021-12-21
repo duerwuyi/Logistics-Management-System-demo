@@ -24,7 +24,7 @@ public class UserController {
         User person = userMapper.selectOne(Wrappers.<User>lambdaQuery()
                 .eq(User::getUsername,user.getUsername()).eq(User::getPassword,user.getPassword()));
         if(person == null){
-            return Result.error("-1","用户名或密码错误");
+            return Result.error("1","用户名或密码错误");
         }
         return Result.success(person);
     }
@@ -34,6 +34,17 @@ public class UserController {
         if(user.getPassword() == null){
             user.setPassword("123456");
         }
+        userMapper.insert(user);
+        return Result.success();
+    }
+
+    @PostMapping("/register")
+    public Result<?> register(@RequestBody User user){
+        User person = userMapper.selectOne(Wrappers.<User>lambdaQuery().eq(User::getUsername,user.getUsername()));
+        if(person != null){
+            return Result.error("2","用户已存在！");
+        }
+        user.setNickName(user.getUsername());
         userMapper.insert(user);
         return Result.success();
     }
