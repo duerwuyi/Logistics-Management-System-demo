@@ -13,10 +13,10 @@ request.interceptors.request.use(config => {
     // config.headers['token'] = user.token;  // 设置请求头
 
     //取出sessionStorage里的缓存信息
-    //let userJson = sessionStorage.getItem("user")
-    //if(!userJson){
-    //    router.push("/login")
-    //}
+    let userJson = sessionStorage.getItem("user")
+    if(!userJson){
+        router.push("/login")
+    }
 
     return config
 }, error => {
