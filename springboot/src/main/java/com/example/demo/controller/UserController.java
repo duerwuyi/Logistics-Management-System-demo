@@ -31,20 +31,12 @@ public class UserController {
 
     @PostMapping
     public Result<?> save(@RequestBody User user){
-        if(user.getPassword() == null){
-            user.setPassword("123456");
-        }
         userMapper.insert(user);
         return Result.success();
     }
 
     @PostMapping("/register")
     public Result<?> register(@RequestBody User user){
-        User person = userMapper.selectOne(Wrappers.<User>lambdaQuery().eq(User::getUsername,user.getUsername()));
-        if(person != null){
-            return Result.error("2","用户已存在！");
-        }
-        user.setNickName(user.getUsername());
         userMapper.insert(user);
         return Result.success();
     }
@@ -67,10 +59,9 @@ public class UserController {
                               @RequestParam(defaultValue = "") String search){
         LambdaQueryWrapper<User> wrapper = Wrappers.<User>lambdaQuery();
         if(StrUtil.isNotBlank(search)){
-            wrapper.like(User::getNickName, search);
+            wrapper.like(User::getUsername, search);
         }
 
         return Result.success(userMapper.selectPage(new Page<>(pageNum , pageSize), wrapper));
     }
-
 }

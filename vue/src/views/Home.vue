@@ -16,10 +16,8 @@
     <el-table :data="tableData" border stripe style="width: 100%">
       <el-table-column prop="id" label="ID" sortable />
       <el-table-column prop="username" label="用户名" />
-      <el-table-column prop="nickName" label="昵称" />
       <el-table-column prop="age" label="年龄" />
       <el-table-column prop="sex" label="性别" />
-      <el-table-column prop="address" label="地址" />
       <el-table-column label="Operations">
         <template #default="scope">
           <el-button size="mini" @click="handleEdit(scope.row)">Edit</el-button>
@@ -47,9 +45,6 @@
           <el-form-item label="用户名">
             <el-input v-model="form.username" style="width: 80%"></el-input>
           </el-form-item>
-          <el-form-item label="昵称">
-            <el-input v-model="form.nickName" style="width: 80%"></el-input>
-          </el-form-item>
           <el-form-item label="年龄">
             <el-input v-model="form.age" style="width: 80%"></el-input>
           </el-form-item>
@@ -58,9 +53,9 @@
             <el-radio v-model="form.sex" label="女">女</el-radio>
             <el-radio v-model="form.sex" label="未知">未知</el-radio>
           </el-form-item>
-          <el-form-item label="地址">
+          <!-- <el-form-item label="地址">
             <el-input type="textarea" v-model="form.address" style="width: 80%"></el-input>
-          </el-form-item>
+          </el-form-item> -->
         </el-form>
         <template #footer>
       <span class="dialog-footer">
@@ -110,7 +105,6 @@ export default {
           pageSize:10,
           search : this.search,
         },
-
       }).then(res => {
         this.tableData=res.data.records
         this.total = res.data.total

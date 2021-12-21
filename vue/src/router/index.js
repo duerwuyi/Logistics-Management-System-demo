@@ -3,6 +3,7 @@ import Home from '../views/Home.vue'
 import login from "../views/login";
 import layout from "../layout/Layout";
 import Register from "../views/Register";
+import userspace from "../views/userspace";
 
 const routes = [
   {
@@ -14,7 +15,11 @@ const routes = [
       {path: 'home',
         name: 'home',
         component: Home,
-      }
+      },
+      {path: 'userspace',
+        name: 'userspace',
+        component: userspace,
+      },
     ]
   },
   {
