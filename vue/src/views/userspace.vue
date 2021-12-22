@@ -1,11 +1,9 @@
 <template>
+
   <div style="padding: 150px;">
     <el-form :model="form" label-width="120px" style="width: 700px">
       <el-form-item label="用户名">
         <el-input v-model="form.username" style="width: 80%" ></el-input>
-      </el-form-item>
-      <el-form-item label="昵称">
-        <el-input v-model="form.nickName" style="width: 80%"></el-input>
       </el-form-item>
       <el-form-item label="年龄">
         <el-input v-model="form.age" style="width: 80%"></el-input>
@@ -23,20 +21,37 @@
       </span>
     </template>
   </div>
-
 </template>
-
 <script>
+
 export default {
-  name: "userspace",
+  name: 'Home',
+  components: {
+  },
   data() {
     return {
-      form:{},
+      user:{},
+      form:{
+        username:null,
+        age:null,
+        sex:null,
+      },
     }
   },
+  created() {
+    let userStr = sessionStorage.getItem("user")
+    console.log(userStr)
+    if(userStr){
+      this.user = JSON.parse(userStr)
+      this.form.username = this.user.username
+      this.form.age = this.user.age
+      this.form.sex = this.user.sex
+    }else{
+      this.user = "无该用户"
+    }
+  }
 }
 </script>
-
 <style scoped>
 
 </style>

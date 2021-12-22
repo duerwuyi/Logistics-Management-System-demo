@@ -12,24 +12,24 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import java.sql.Wrapper;
 
-@RestController
-@RequestMapping("/user")
+@RestController//controller里面的方法都以json格式输出
+@RequestMapping("/user")//处理/user
 public class UserController {
 
     @Resource
     UserMapper userMapper;
 
-    @PostMapping("/login")
-    public Result<?> login(@RequestBody User user){
-        User person = userMapper.selectOne(Wrappers.<User>lambdaQuery()
-                .eq(User::getUsername,user.getUsername()).eq(User::getPassword,user.getPassword()));
-        if(person == null){
+    @PostMapping("/login")//处理/login
+    public Result<?> login(@RequestBody User user) {
+        Wrappers.<User>lambdaQuery().eq(User::getUsername,user.getUsername()).eq(User::getPassword,user.getPassword());
+        User person = userMapper.selectOne(Wrappers.<User>lambdaQuery().eq(User::getUsername,user.getUsername()).eq(User::getPassword,user.getPassword()));
+        if(person == null) {
             return Result.error("1","用户名或密码错误");
         }
         return Result.success(person);
     }
 
-    @PostMapping
+    @PostMapping("")
     public Result<?> save(@RequestBody User user){
         userMapper.insert(user);
         return Result.success();
@@ -53,6 +53,7 @@ public class UserController {
         return Result.success();
     }
 
+    //分页查询
     @GetMapping
     public Result<?> findPage(@RequestParam(defaultValue = "1") Integer pageNum ,
                               @RequestParam(defaultValue = "10") Integer pageSize ,
@@ -61,7 +62,6 @@ public class UserController {
         if(StrUtil.isNotBlank(search)){
             wrapper.like(User::getUsername, search);
         }
-
         return Result.success(userMapper.selectPage(new Page<>(pageNum , pageSize), wrapper));
     }
 }

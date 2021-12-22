@@ -40,12 +40,7 @@ export default {
     let userStr = sessionStorage.getItem("user")
     if(userStr){
       this.user = JSON.parse(userStr)
-      if(this.user.nickName != null){
-        this.names = this.user.nickName
-      }
-      else{
-        this.names = this.user.username
-      }
+      this.names = this.user.username
     }else{
      this.user = "无该用户"
     }
