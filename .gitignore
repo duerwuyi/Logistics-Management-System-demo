@@ -2,7 +2,7 @@
 node_modules
 /dist
 target/
-
+*.properties
 
 # local env files
 .env.local
