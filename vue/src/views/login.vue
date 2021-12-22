@@ -18,7 +18,7 @@
         </el-input>
       </el-form-item>
       <el-form-item>
-        <el-button style="width: 100%;" type="primary" @click="login">登录</el-button>
+        <el-button style="width: 100%;" type="primary" @click="login" @keyup.enter="login">登录</el-button>
       </el-form-item>
       <el-link :underline="false" href="/register">没有账号？注册一个！</el-link>
     </el-form>

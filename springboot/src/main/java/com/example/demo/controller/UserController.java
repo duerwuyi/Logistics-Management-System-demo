@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.sql.Wrapper;
+import java.util.List;
 
 @RestController//controller里面的方法都以json格式输出
 @RequestMapping("/user")//处理/user
@@ -26,6 +27,16 @@ public class UserController {
         if(person == null) {
             return Result.error("1","用户名或密码错误");
         }
+        return Result.success(person);
+    }
+
+    @PostMapping("/who")//处理所有的需要验证用户的情况，id储存在sessionStorage里，sessionStorage不可信
+    public Result<?> getUser(@RequestBody Integer id) {
+        User person = userMapper.selectById(id);
+        if(person == null) {
+            return Result.error("101","该用户不存在！");
+        }
+        person.setPassword(null);//不能暴露密码
         return Result.success(person);
     }
 
@@ -62,6 +73,12 @@ public class UserController {
         if(StrUtil.isNotBlank(search)){
             wrapper.like(User::getUsername, search);
         }
-        return Result.success(userMapper.selectPage(new Page<>(pageNum , pageSize), wrapper));
+        Page<User> a = userMapper.selectPage(new Page<>(pageNum , pageSize), wrapper);
+        List<User> X = a.getRecords();
+        for(User x : X){
+            x.setPassword(null);
+        }
+        a.setRecords(X);//不能暴露密码
+        return Result.success(a);
     }
 }
