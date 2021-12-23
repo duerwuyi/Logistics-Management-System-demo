@@ -14,16 +14,28 @@
 
 
     <el-table :data="tableData" border stripe style="width: 100%">
-      <el-table-column prop="id" label="货物ID" sortable />
+      <el-table-column type="expand">
+        <template #default="props">
+          <el-card class="box-card" style="width:600px; justify-content: center">
+            <p>发件方ID: {{ props.row.senderid }},发件人用户名：{{ props.row.sendername }}</p>
+            <p>收件方ID: {{ props.row.receiverid }},收件人用户名：{{ props.row.receivername }}</p>
+            <p>派送员ID: {{ props.row.employeeid }},派送员用户名：{{ props.row.employeename }}</p>
+            <p>车辆ID：{{ props.row.carid }} </p>
+            <p>货物重量：{{ props.row.weight }} </p>
+            <p>物流费用：{{ props.row.cost }} </p>
+          </el-card>
+        </template>
+      </el-table-column>
+      <el-table-column prop="id" label="订单ID" sortable />
       <el-table-column prop="ordername" label="货物名称" />
-      <el-table-column prop="senderid" label="发件方ID" />
+<!--      <el-table-column prop="senderid" label="发件方ID" />-->
       <el-table-column prop="sendadd" label="发件方地址" />
-      <el-table-column prop="receiverid" label="收件方ID" />
+<!--      <el-table-column prop="receiverid" label="收件方ID" />-->
       <el-table-column prop="receadd" label="收件方地址" />
-      <el-table-column prop="employeeid" label="派送员ID" />
-      <el-table-column prop="carid" label="车辆ID" />
-      <el-table-column prop="weight" label="货物重量" />
-      <el-table-column prop="cost" label="物流费用" />
+<!--      <el-table-column prop="employeeid" label="派送员ID" />-->
+<!--      <el-table-column prop="carid" label="车辆ID" />-->
+<!--      <el-table-column prop="weight" label="货物重量" />-->
+<!--      <el-table-column prop="cost" label="物流费用" />-->
       <el-table-column prop="status" label="货物状态" />
 
       <el-table-column label="Operations">
@@ -131,6 +143,23 @@ export default {
           search : this.search,
         },
       }).then(res => {
+        res.data.records.forEach(function (item){
+          request.post("/api/user/who",item.senderid).then(res =>{
+            if(res.code == "0"){
+              item.sendername = res.data.username
+            }
+          })
+          request.post("/api/user/who",item.receiverid).then(res =>{
+            if(res.code == "0"){
+              item.receivername = res.data.username
+            }
+          })
+          request.post("/api/user/who",item.employeeid).then(res =>{
+            if(res.code == "0"){
+              item.employeename = res.data.username
+            }
+          })
+        })
         this.tableData=res.data.records
         this.total = res.data.total
         console.log(res)

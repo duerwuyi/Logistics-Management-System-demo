@@ -1,5 +1,5 @@
 <template>
-  <div style="width: 100%;height: 100vh;background-color: lightskyblue; overflow: hidden">
+  <div style="width: 100%;height: 100vh;background-color: lightskyblue; overflow: hidden" @keyup.enter="register">
     <div style="width: 400px;margin: 150px auto">
       <div style="font-size: 30px;text-align: center; padding: 30px 0">注册</div>
       <el-form ref="form" :model="form" size="normal" :rules="rules">

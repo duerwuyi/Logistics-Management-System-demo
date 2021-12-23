@@ -43,7 +43,7 @@ public class OrderController {
                               @RequestParam(defaultValue = "") String search){
         LambdaQueryWrapper<Order> wrapper = Wrappers.<Order>lambdaQuery();
         if(StrUtil.isNotBlank(search)){
-            wrapper.like(Order::getId, search);
+            wrapper.like(Order::getOrdername, search);
         }
         Page<Order> a = orderMapper.selectPage(new Page<>(pageNum , pageSize), wrapper);
         return Result.success(a);

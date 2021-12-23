@@ -1,5 +1,5 @@
 <template>
-<div style="width: 100%;height: 100vh;background-color: lightskyblue; overflow: hidden">
+<div style="width: 100%;height: 100vh;background-color: lightskyblue; overflow: hidden"  @keyup.enter="login">
   <div style="width: 400px;margin: 150px auto">
     <div style="font-size: 30px;text-align: center; padding: 30px 0">登录</div>
     <el-form ref="form" :model="form" size="normal" :rules="rules">
@@ -18,7 +18,7 @@
         </el-input>
       </el-form-item>
       <el-form-item>
-        <el-button style="width: 100%;" type="primary" @click="login" @keyup.enter="login">登录</el-button>
+        <el-button style="width: 100%;" type="primary" @click="login">登录</el-button>
       </el-form-item>
       <el-link :underline="false" href="/register">没有账号？注册一个！</el-link>
     </el-form>
@@ -63,7 +63,6 @@ export default {
   },
   methods:{
     login(){
-
       this.$refs['form'].validate((valid) => {
         if (valid) {
           request.post("/api/user/login",this.form).then(res => {

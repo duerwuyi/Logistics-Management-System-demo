@@ -1,12 +1,12 @@
 <template>
   <el-menu
-      default-active="path"
+      :default-active="path"
       router
       class="el-menu-vertical-demo"
   >
     <el-menu-item index="/home">
       <el-icon><location /></el-icon>
-      <span>（用户）表单管理</span>
+      <span>（管理员）用户管理</span>
     </el-menu-item>
     <el-sub-menu>
       <template #title>
