@@ -1,12 +1,12 @@
 <template>
   <div style="padding: 10px">
-<!--    功能区域-->
+    <!--    功能区域-->
     <div style="margin: 10px 0">
       <el-button type="primary" @click="add">新增</el-button>
       <el-button type="primary">导入</el-button>
       <el-button type="primary">导出</el-button>
     </div>
-<!--    搜索区域-->
+    <!--    搜索区域-->
     <div style="margin: 10px 0">
       <el-input v-model="search" placeholder="Please input"  style="width: 20%" clearable />
       <el-button type="primary" style="margin-left: 7px" @click="load">查询</el-button>
@@ -14,10 +14,18 @@
 
 
     <el-table :data="tableData" border stripe style="width: 100%">
-      <el-table-column prop="id" label="ID" sortable />
-      <el-table-column prop="username" label="用户名" />
-      <el-table-column prop="age" label="年龄" />
-      <el-table-column prop="sex" label="性别" />
+      <el-table-column prop="id" label="货物ID" sortable />
+      <el-table-column prop="ordername" label="货物名称" />
+      <el-table-column prop="senderid" label="发件方ID" />
+      <el-table-column prop="sendadd" label="发件方地址" />
+      <el-table-column prop="receiverid" label="收件方ID" />
+      <el-table-column prop="receadd" label="收件方地址" />
+      <el-table-column prop="employeeid" label="派送员ID" />
+      <el-table-column prop="carid" label="车辆ID" />
+      <el-table-column prop="weight" label="货物重量" />
+      <el-table-column prop="cost" label="物流费用" />
+      <el-table-column prop="status" label="货物状态" />
+
       <el-table-column label="Operations">
         <template #default="scope">
           <el-button size="mini" @click="handleEdit(scope.row)">Edit</el-button>
@@ -42,29 +50,43 @@
 
       <el-dialog v-model="dialogVisible" title="Please Enter" width="30%">
         <el-form :model="form" label-width="120px">
-
-          <el-form-item label="用户名">
-            <el-input v-model="form.username" style="width: 80%"></el-input>
+          <el-form-item label="货物名称">
+            <el-input v-model="form.ordername" style="width: 80%"></el-input>
           </el-form-item>
-          <el-form-item label="年龄">
-            <el-input v-model="form.age" style="width: 80%"></el-input>
+          <el-form-item label="发件方ID">
+            <el-input v-model="form.senderid" style="width: 80%"></el-input>
           </el-form-item>
-
-          <el-form-item label="性别">
-            <el-radio v-model="form.sex" label="男">男</el-radio>
-            <el-radio v-model="form.sex" label="女">女</el-radio>
-            <el-radio v-model="form.sex" label="未知">未知</el-radio>
+          <el-form-item type="textarea" label="发件方地址">
+            <el-input v-model="form.sendadd" style="width: 80%"></el-input>
           </el-form-item>
-
-          <!-- <el-form-item label="地址">
-            <el-input type="textarea" v-model="form.address" style="width: 80%"></el-input>
-          </el-form-item> -->
+          <el-form-item label="收件方ID">
+            <el-input v-model="form.receiverid" style="width: 80%"></el-input>
+          </el-form-item>
+          <el-form-item type="textarea" label="收件方地址">
+            <el-input v-model="form.receadd" style="width: 80%"></el-input>
+          </el-form-item>
+          <el-form-item label="派送员ID">
+            <el-input v-model="form.employeeid" style="width: 80%"></el-input>
+          </el-form-item>
+          <el-form-item label="车辆ID">
+            <el-input v-model="form.carid" style="width: 80%"></el-input>
+          </el-form-item>
+          <el-form-item label="货物重量">
+            <el-input v-model="form.weight" style="width: 80%"></el-input>
+          </el-form-item>
+          <el-form-item label="物流费用">
+            <el-input v-model="form.cost" style="width: 80%"></el-input>
+          </el-form-item>
+          <el-form-item label="货物状态">
+            <el-input v-model="form.status" style="width: 80%"></el-input>
+          </el-form-item>
         </el-form>
+
         <template #footer>
-      <span class="dialog-footer">
-        <el-button @click="dialogVisible = false">Cancel</el-button>
-        <el-button type="primary" @click="save">Confirm</el-button>
-      </span>
+          <span class="dialog-footer">
+            <el-button @click="dialogVisible = false">Cancel</el-button>
+            <el-button type="primary" @click="save">Confirm</el-button>
+          </span>
         </template>
       </el-dialog>
 
@@ -79,7 +101,7 @@ import request from "../utils/request";
 import {ElMessage} from "element-plus";
 
 export default {
-  name: 'Home',
+  name: 'orderlist',
   components: {
 
   },
@@ -102,7 +124,7 @@ export default {
       this.form={}
     },
     load(){
-      request.get("/api/user",{
+      request.get("/api/order",{
         params:{
           pageNum: this.currentPage,
           pageSize:10,
@@ -116,7 +138,7 @@ export default {
     },
     save(){
       if(this.form.id){
-        request.put("/api/user",this.form).then(res => {
+        request.put("/api/order",this.form).then(res => {
           console.log(res)
           if(res.code == "0"){
             ElMessage({
@@ -132,7 +154,7 @@ export default {
         })
       }
       else{
-        request.post("/api/user",this.form).then(res => {
+        request.post("/api/order",this.form).then(res => {
           console.log(res)
           if(res.code == "0"){
             ElMessage({
@@ -156,7 +178,7 @@ export default {
     },
     HandleDelete(id) {
       console.log(id)
-      request.delete("/api/user/" + id).then(res => {
+      request.delete("/api/order/" + id).then(res => {
         console.log(res)
         if(res.code == "0"){
           ElMessage({

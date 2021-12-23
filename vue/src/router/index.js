@@ -4,6 +4,7 @@ import login from "../views/login";
 import layout from "../layout/Layout";
 import Register from "../views/Register";
 import userspace from "../views/userspace";
+import orderlist from "@/views/orderlist";
 
 const routes = [
   {
@@ -20,6 +21,11 @@ const routes = [
         name: 'userspace',
         component: userspace,
       },
+      {path: 'orderlist',
+        name: 'orderlist',
+        component: orderlist,
+      },
+
     ]
   },
   {

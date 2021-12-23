@@ -25,7 +25,6 @@ public class OrderController {
         return Result.success();
     }
 
-
     @PutMapping
     public Result<?> update(@RequestBody Order order){
         orderMapper.updateById(order);
@@ -44,9 +43,9 @@ public class OrderController {
                               @RequestParam(defaultValue = "") String search){
         LambdaQueryWrapper<Order> wrapper = Wrappers.<Order>lambdaQuery();
         if(StrUtil.isNotBlank(search)){
-            wrapper.like(Order::getOrdername, search);
+            wrapper.like(Order::getId, search);
         }
-        return Result.success(orderMapper.selectPage(new Page<>(pageNum , pageSize), wrapper));
+        Page<Order> a = orderMapper.selectPage(new Page<>(pageNum , pageSize), wrapper);
+        return Result.success(a);
     }
-
 }

@@ -1,33 +1,45 @@
 <template>
   <el-menu
-      style="width: 200px; min-height: calc(100vh - 50px) "
-      :default-active="path"
+      default-active="path"
       router
-      class="el-menu-vertical-demo">
+      class="el-menu-vertical-demo"
+  >
     <el-menu-item index="/home">
-        <el-icon><location /></el-icon>
-        <span>（用户）表单管理</span>
+      <el-icon><location /></el-icon>
+      <span>（用户）表单管理</span>
     </el-menu-item>
-    <el-menu-item index="">
-      <el-icon><icon-menu /></el-icon>
-      <span>应用</span>
-    </el-menu-item>
-    <el-menu-item index="">
+    <el-sub-menu>
+      <template #title>
+        <el-icon><icon-menu /></el-icon>
+        <span>应用</span>
+      </template>
+
+      <el-menu-item index="/orderlist">
+        <el-icon><van /></el-icon>
+        <span>物流管理</span>
+      </el-menu-item>
+
+      <el-menu-item-group title="Group Two">
+        <el-menu-item>item three</el-menu-item>
+      </el-menu-item-group>
+    </el-sub-menu>
+
+    <el-menu-item>
       <el-icon><setting /></el-icon>
-      <span>设置</span>
+      <template #title>设置</template>
     </el-menu-item>
   </el-menu>
 </template>
-
-<script>
+<script scope>
+import { defineComponent, ref } from 'vue'
 import {
   Location,
   Document,
   Menu as IconMenu,
   Setting,
-} from '@element-plus/icons'
+} from '@element-plus/icons-vue'
 
-export default ({
+export default defineComponent({
   name:"Aside",
   data(){
     return{
