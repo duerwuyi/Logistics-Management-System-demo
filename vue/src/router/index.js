@@ -5,6 +5,7 @@ import layout from "../layout/Layout";
 import Register from "../views/Register";
 import userspace from "../views/userspace";
 import orderlist from "@/views/orderlist";
+import Car from "@/views/Car";
 
 const routes = [
   {
@@ -25,7 +26,10 @@ const routes = [
         name: 'orderlist',
         component: orderlist,
       },
-
+      {path: 'car',
+        name: 'car',
+        component: Car,
+      },
     ]
   },
   {

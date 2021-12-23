@@ -15,8 +15,13 @@
       </template>
 
       <el-menu-item index="/orderlist">
-        <el-icon><van /></el-icon>
+        <el-icon></el-icon>
         <span>物流管理</span>
+      </el-menu-item>
+
+      <el-menu-item index="/Car">
+        <el-icon></el-icon>
+        <span>车辆管理</span>
       </el-menu-item>
 
       <el-menu-item-group title="Group Two">

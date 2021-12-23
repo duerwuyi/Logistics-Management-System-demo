@@ -26,7 +26,7 @@ import request from "../utils/request";
 import {ElMessage} from "element-plus";
 
 export default {
-  name: 'Home',
+  name: 'userspace',
   components: {
   },
   data() {
