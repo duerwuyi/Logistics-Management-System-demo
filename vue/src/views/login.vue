@@ -18,7 +18,11 @@
         </el-input>
       </el-form-item>
       <el-form-item>
-        <el-button style="width: 100%;" type="primary" @click="login">登录</el-button>
+        <el-button @click="onShow" type="warning" style="width:400px;"> 开始验证 </el-button>
+        <Vcode :show="isShow" @success="onSuccess" @close="onClose" />
+      </el-form-item>
+      <el-form-item>
+        <el-button style="width: 100%;" type="primary" @click="login" :disabled="disabled">登录</el-button>
       </el-form-item>
       <el-link :underline="false" href="/register">没有账号？注册一个！</el-link>
     </el-form>
@@ -33,11 +37,15 @@ import {
 } from '@element-plus/icons'
 import request from "../utils/request";
 import {ElMessage} from "element-plus";
+import { ref } from "vue";
+import Vcode from "vue3-puzzle-vcode";
+
 
 export default {
   name: "login",
   data(){
     return{
+      Vcode,
       form:{},
       rules: {
         username: [
@@ -60,6 +68,7 @@ export default {
   components: {
     Avatar,
     Lock,
+    Vcode,
   },
   methods:{
     login(){
@@ -84,6 +93,31 @@ export default {
         }
       })
     },
+  },
+  setup() {
+    const isShow = ref(false);
+    const disabled = ref(true);
+
+    const onShow = () => {
+      isShow.value = true;
+    };
+
+    const onClose = () => {
+      isShow.value = false;
+    };
+
+    const onSuccess = () => {
+      onClose(); // 验证成功，需要手动关闭模态框
+      disabled.value = false;
+    };
+
+    return {
+      isShow,
+      disabled,
+      onShow,
+      onClose,
+      onSuccess
+    };
   }
 }
 </script>

@@ -27,6 +27,7 @@ public class UserController {
         if(person == null) {
             return Result.error("1","用户名或密码错误");
         }
+        person.setPassword(null);
         return Result.success(person);
     }
 
