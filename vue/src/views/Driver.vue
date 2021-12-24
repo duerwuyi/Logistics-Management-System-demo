@@ -12,7 +12,11 @@
     </div>
 
     <el-table :data="tableData" border stripe style="width: 100%">
-      <el-table-column prop="drivername" label="司机名" />
+      <el-table-column label="派送员用户名">
+        <template #default="props">
+          {{props.row.drivername}}
+        </template>
+      </el-table-column>
       <el-table-column prop="phonenum" label="联系电话" />
       <el-table-column prop="status" label="状态" />
       <el-table-column label="Operations">
@@ -119,7 +123,7 @@ export default {
       else{
         ElMessage({
           type: 'error',
-          message: '没有这个司机',
+          message: res.msg,
         })
       }
       this.dialogVisible = false
