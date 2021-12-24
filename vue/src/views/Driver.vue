@@ -10,11 +10,9 @@
       <el-input v-model="search" placeholder="Please input"  style="width: 20%" clearable />
       <el-button type="primary" style="margin-left: 7px" @click="load">查询</el-button>
     </div>
+
     <el-table :data="tableData" border stripe style="width: 100%">
-      <el-table-column type="expand">
-        <p>{{props.row}}</p>
-      </el-table-column>
-      <el-table-column prop="drivername" label="派送员用户名" />
+      <el-table-column prop="drivername" label="司机名" />
       <el-table-column prop="phonenum" label="联系电话" />
       <el-table-column prop="status" label="状态" />
       <el-table-column label="Operations">
@@ -70,11 +68,17 @@ export default {
       search: '',
       currentPage: 1 ,
       total: 10 ,
-      tableData: []
+      tableData: [],
+      keyNum:0,
     }
   },
   created(){
     this.load()
+    // clearTimeout(this.timer);  //清除延迟执行
+    //
+    // this.timer = setInterval(()=>{   //设置延迟执行
+    //   this.keyNum++;
+    // },1000);
   },
   methods :{
     add(){
@@ -85,20 +89,20 @@ export default {
       request.get("/api/driver",{
         params:{
           pageNum: this.currentPage,
-          pageSize: 10,
+          pageSize:10,
           search : this.search,
         },
-      }).then(res => {
-        res.data.records.forEach(function (item){
-          request.post("/api/user/who",item.driverid).then(res =>{
-            if(res.code == "0"){
+      }).then(async res => {
+        for (const item of res.data.records) {
+          await request.post("/api/user/who", item.driverid).then(res => {
+            if (res.code == "0") {
               item.drivername = res.data.username
             }
           })
-        })
-        this.tableData=res.data.records
-        this.total = res.data.total
+        }
         console.log(res)
+        this.tableData = res.data.records
+        this.total = res.data.total
       })
     },
     save(){
@@ -121,7 +125,7 @@ export default {
       else{
         ElMessage({
           type: 'error',
-          message: res.msg,
+          message: '没有这个司机',
         })
       }
       this.dialogVisible = false
