@@ -1,6 +1,7 @@
 {
   "dependencies": {
     "@vue/compiler-sfc": "^3.2.26",
-    "vue-loader": "^17.0.0"
+    "vue-loader": "^17.0.0",
+    "vue3-puzzle-vcode": "^1.0.5"
   }
 }

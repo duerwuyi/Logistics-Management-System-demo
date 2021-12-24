@@ -10,13 +10,11 @@
       <el-input v-model="search" placeholder="Please input"  style="width: 20%" clearable />
       <el-button type="primary" style="margin-left: 7px" @click="load">查询</el-button>
     </div>
-
     <el-table :data="tableData" border stripe style="width: 100%">
-      <el-table-column label="派送员用户名">
-        <template #default="props">
-          {{props.row.drivername}}
-        </template>
+      <el-table-column type="expand">
+        <p>{{props.row}}</p>
       </el-table-column>
+      <el-table-column prop="drivername" label="派送员用户名" />
       <el-table-column prop="phonenum" label="联系电话" />
       <el-table-column prop="status" label="状态" />
       <el-table-column label="Operations">
@@ -87,7 +85,7 @@ export default {
       request.get("/api/driver",{
         params:{
           pageNum: this.currentPage,
-          pageSize:10,
+          pageSize: 10,
           search : this.search,
         },
       }).then(res => {
