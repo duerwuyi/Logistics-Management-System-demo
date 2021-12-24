@@ -13,10 +13,14 @@
       <el-icon><icon-menu /></el-icon>
       <span>订单管理</span>
     </el-menu-item>
-      <el-menu-item>
-        <el-icon><van /></el-icon>
-        <span>车辆管理</span>
-      </el-menu-item>
+    <el-menu-item index="/car">
+      <el-icon><van /></el-icon>
+      <span>车辆管理</span>
+    </el-menu-item>
+    <el-menu-item index="/driver">
+      <el-icon><van /></el-icon>
+      <span>司机管理</span>
+    </el-menu-item>
     <el-menu-item index="/userspace">
       <el-icon><setting /></el-icon>
       <template #title>账户设置</template>
