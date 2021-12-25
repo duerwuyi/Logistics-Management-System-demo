@@ -79,9 +79,11 @@
             </template>
           </el-form-item>
 
-          <!--<el-form-item label="车辆ID">
-            <el-input v-model="form.carid" style="width: 80%"></el-input>
-            <el-button size="mini" @click="getFreeCar(scope.row)">选择车辆</el-button>
+          <el-form-item label="车辆ID">
+            <template #default="scope">
+              <el-input v-model="form.carid" style="width: 80%"></el-input>
+              <el-button size="mini" @click="getFreeCar(scope.row)">选择车辆</el-button>
+            </template>
           </el-form-item>
 
           <el-form-item label="货物重量">
@@ -92,7 +94,7 @@
           </el-form-item>
           <el-form-item label="货物状态">
             <el-input v-model="form.status" style="width: 80%"></el-input>
-          </el-form-item>-->
+          </el-form-item>
         </el-form>
 
         <template #footer>
@@ -105,35 +107,33 @@
 
 
 
-      <!--<el-dialog v-model="dialogForCar" title="Please Enter" width="30%">
-        <el-form :model="form" label-width="120px">
-        </el-form>
-
-        <template #footer>
-          <span class="dialog-footer">
-            <el-button @click="dialogForCar = false">Cancel</el-button>
-            <el-button type="primary" @click="save">Confirm</el-button>
-          </span>
-        </template>
-      </el-dialog>-->
+      <el-dialog v-model="dialogForCar" title="Please Enter" width="30%">
+        <el-table :data="CarTableData" border stripe style="width: 100%">
+          <el-table-column prop="carid" label="车辆ID" sortable />
+          <el-table-column prop="carname" label="车辆名字" />
+          <el-table-column prop="maxweight" label="最大载重" />
+          <el-table-column prop="status" label="车辆状态" />
+          <el-table-column label="Operations">
+            <template #default="scope">
+              <el-button size="mini" @click="selectCar(scope.row)">选择</el-button>
+            </template>
+          </el-table-column>
+        </el-table>
+      </el-dialog>
 
 
 
       <el-dialog v-model="dialogForDriver" title="Please Enter" width="30%">
-        <el-table :data="tableData" border stripe style="width: 100%">
-          <el-table-column prop="id" label="订单ID" sortable />
-          <el-table-column prop="ordername" label="货物名称" />
-          <el-table-column prop="sendadd" label="发件方地址" />
-          <el-table-column prop="receadd" label="收件方地址" />
-          <el-table-column prop="status" label="货物状态" />
+        <el-table :data="DriverTableData" border stripe style="width: 100%">
+          <el-table-column prop="driverid" label="司机ID" sortable />
+          <el-table-column prop="status" label="司机状态" />
+          <el-table-column prop="phonenum" label="联系方式" />
+          <el-table-column label="Operations">
+            <template #default="scope">
+              <el-button size="mini" @click="selectDriver(scope.row)">选择</el-button>
+            </template>
+          </el-table-column>
         </el-table>
-
-        <template #footer>
-          <span class="dialog-footer">
-            <el-button @click="dialogForDriver = false">Cancel</el-button>
-            <el-button type="primary" @click="save">Confirm</el-button>
-          </span>
-        </template>
       </el-dialog>
 
     </div>
@@ -161,7 +161,10 @@ export default {
       currentPage: 1 ,
       total: 10 ,
       tableData: [],
+      cntDriver: 10,
       DriverTableData:[],
+      cntCar: 10,
+      CarTableData:[],
     }
   },
   created(){
@@ -201,11 +204,38 @@ export default {
         this.total = res.data.total
         console.log(res)
       })
+
+
+      //获取司机信息
+      request.get("/api/driver",{
+        params:{
+          pageNum: this.currentPage,
+          pageSize:10,
+          search : this.search,
+        },
+      }).then(res => {
+        this.DriverTableData=res.data.records
+        this.cntDriver = res.data.total
+        console.log(res)
+      })
+
+      //获取车辆信息
+      request.get("/api/car",{
+        params:{
+          pageNum: this.currentPage,
+          pageSize:10,
+          search : this.search,
+        },
+      }).then(res => {
+        this.CarTableData=res.data.records
+        this.cntCar = res.data.total
+        console.log(res)
+      })
     },
     save(){
+      console.log(this.form)
       if(this.form.id){
         request.put("/api/order",this.form).then(res => {
-          console.log(res)
           if(res.code == "0"){
             ElMessage({
               type: 'success',
@@ -245,8 +275,17 @@ export default {
     getFreeCar(row) {
       this.dialogForCar = true
     },
+    selectCar(row) {
+      this.form.carid = JSON.parse(JSON.stringify(row.id))
+      this.dialogForCar = false
+    },
+
     getFreeDriver(row) {
       this.dialogForDriver = true
+    },
+    selectDriver(row) {
+      this.form.employeeid = JSON.parse(JSON.stringify(row.driverid))
+      this.dialogForDriver = false
     },
     HandleDelete(id) {
       console.log(id)
