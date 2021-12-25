@@ -6,11 +6,16 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.demo.common.Result;
 import com.example.demo.entity.Order;
+import com.example.demo.entity.User;
 import com.example.demo.mapper.OrderMapper;
+import com.example.demo.mapper.UserMapper;
+import com.example.demo.controller.UserController;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.sql.Wrapper;
+import java.util.List;
+
 
 @RestController
 @RequestMapping("/order")
@@ -46,6 +51,20 @@ public class OrderController {
             wrapper.like(Order::getOrdername, search);
         }
         Page<Order> a = orderMapper.selectPage(new Page<>(pageNum , pageSize), wrapper);
+
+        List<Order> X=a.getRecords();
+        for(Order x:X){
+            UserMapper userMapper = null;
+            User user=userMapper.selectById(x.getSenderid());
+            x.setSendername(Integer.valueOf(User.class.getName()));
+            user = userMapper.selectById(x.getReceiverid());
+            x.setReceivername(Integer.valueOf(User.class.getName()));
+            user = userMapper.selectById(x.getEmployeeid());
+            x.setEmployeename(Integer.valueOf(User.class.getName()));
+        }
+        a.setRecords(X);
         return Result.success(a);
     }
+
+
 }

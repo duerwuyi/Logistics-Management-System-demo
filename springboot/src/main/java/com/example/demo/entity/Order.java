@@ -1,6 +1,7 @@
 package com.example.demo.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
@@ -20,4 +21,13 @@ public class Order {
     private String status;
     private Integer weight;
     private Integer cost;
+    @TableField(exist=false)
+    private Integer sendername;
+    @TableField(exist=false)
+    private Integer receivername;
+    @TableField(exist=false)
+    private Integer employeename;
+
+    public void setReceivername() {
+    }
 }

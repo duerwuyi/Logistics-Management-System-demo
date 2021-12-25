@@ -183,23 +183,8 @@ export default {
           search : this.search,
         },
       }).then(res => {
-        res.data.records.forEach(function (item){
-          request.post("/api/user/who",item.senderid).then(res =>{
-            if(res.code == "0"){
-              item.sendername = res.data.username
-            }
-          })
-          request.post("/api/user/who",item.receiverid).then(res =>{
-            if(res.code == "0"){
-              item.receivername = res.data.username
-            }
-          })
-          request.post("/api/user/who",item.employeeid).then(res =>{
-            if(res.code == "0"){
-              item.employeename = res.data.username
-            }
-          })
-        })
+        console.log(res.data)
+
         this.tableData=res.data.records
         this.total = res.data.total
         console.log(res)

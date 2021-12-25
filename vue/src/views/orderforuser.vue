@@ -114,31 +114,15 @@ export default {
           search : this.search,
         },
       }).then(res => {
-        res.data.records.forEach(function (item){
-          request.post("/api/user/who",item.senderid).then(res =>{
-            if(res.code === "0"){
-              item.sendername = res.data.username
-            }
-          })
-          request.post("/api/user/who",item.receiverid).then(res =>{
-            if(res.code === "0"){
-              item.receivername = res.data.username
-            }
-          })
-          request.post("/api/user/who",item.employeeid).then(res =>{
-            if(res.code === "0"){
-              item.employeename = res.data.username
-            }
-          })
-        })
-        this.tableData=res.data.records
-        this.total = res.data.total
-        var t1 = this.user.id
-        this.tableData = this.tableData.filter(item => {
-          return item.receiverid === t1 || item.senderid === t1
-        })
-        console.log(res)
-      })
+            this.tableData = res.data.records
+            this.total = res.data.total
+            var t1 = this.user.id
+            this.tableData = this.tableData.filter(item => {
+              return item.receiverid === t1 || item.senderid === t1
+            })
+            console.log(res)
+          }
+      )
     },
     save(){
       if(this.form.id){
