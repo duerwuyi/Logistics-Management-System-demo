@@ -103,7 +103,8 @@ export default {
     let userStr = sessionStorage.getItem("user")
     if(userStr){
       this.user = JSON.parse(userStr)
-    }else{
+    }
+    else{
       this.user = "无该用户"
     }
     this.load()

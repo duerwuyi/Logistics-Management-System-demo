@@ -109,7 +109,7 @@
 
       <el-dialog v-model="dialogForCar" title="Please Enter" width="30%">
         <el-table :data="CarTableData" border stripe style="width: 100%">
-          <el-table-column prop="carid" label="车辆ID" sortable />
+          <el-table-column prop="id" label="车辆ID" sortable />
           <el-table-column prop="carname" label="车辆名字" />
           <el-table-column prop="maxweight" label="最大载重" />
           <el-table-column prop="status" label="车辆状态" />
@@ -216,6 +216,9 @@ export default {
       }).then(res => {
         this.DriverTableData=res.data.records
         this.cntDriver = res.data.total
+        this.DriverTableData = this.DriverTableData.filter(item => {
+          return item.status==="空闲"
+        })
         console.log(res)
       })
 
@@ -229,6 +232,9 @@ export default {
       }).then(res => {
         this.CarTableData=res.data.records
         this.cntCar = res.data.total
+        this.CarTableData = this.CarTableData.filter(item => {
+          return item.status==="空闲"
+        })
         console.log(res)
       })
     },
