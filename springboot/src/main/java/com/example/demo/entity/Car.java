@@ -12,4 +12,5 @@ public class Car {
     private Integer id;
     private String carname;
     private Integer maxweight;
+    private String status;
 }

@@ -11,7 +11,6 @@ public class Driver {
     @TableId(type = IdType.AUTO)
     private Integer id;
     private Integer driverid;
-    private Integer newname;
     private String phonenum;
     private String status;
 }

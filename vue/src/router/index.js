@@ -7,6 +7,8 @@ import userspace from "../views/userspace";
 import orderlist from "@/views/orderlist";
 import Car from "@/views/Car";
 import Driver from "@/views/Driver";
+import orderfordriver from "@/views/orderfordriver";
+import carfordriver from "@/views/Carfordriver";
 
 const routes = [
   {
@@ -34,6 +36,14 @@ const routes = [
       {path: 'driver',
         name: 'Driver',
         component: Driver,
+      },
+      {path: 'orderfordriver',
+        name: 'orderfordriver',
+        component: orderfordriver,
+      },
+      {path: 'carfordriver',
+        name: 'carfordriver',
+        component: carfordriver,
       },
     ]
   },

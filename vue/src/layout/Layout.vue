@@ -14,14 +14,14 @@
 
 <script>
 import Header from "@/components/Header";
-import Aside from "@/components/Aside";
+import Aside from "@/components/AsideDriver";
 
 export default {
   name: "Layout",
   components:{
     Header,
-    Aside
-  }
+    Aside,
+  },
 }
 </script>
 
