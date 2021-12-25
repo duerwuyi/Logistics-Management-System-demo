@@ -21,13 +21,4 @@ public class Order {
     private String status;
     private Integer weight;
     private Integer cost;
-    @TableField(exist=false)
-    private Integer sendername;
-    @TableField(exist=false)
-    private Integer receivername;
-    @TableField(exist=false)
-    private Integer employeename;
-
-    public void setReceivername() {
-    }
 }

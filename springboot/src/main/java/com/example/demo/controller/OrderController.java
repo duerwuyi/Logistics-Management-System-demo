@@ -23,6 +23,7 @@ public class OrderController {
 
     @Resource
     OrderMapper orderMapper;
+    UserMapper userMapper;
 
     @PostMapping
     public Result<?> save(@RequestBody Order order){
@@ -51,20 +52,6 @@ public class OrderController {
             wrapper.like(Order::getOrdername, search);
         }
         Page<Order> a = orderMapper.selectPage(new Page<>(pageNum , pageSize), wrapper);
-
-        List<Order> X=a.getRecords();
-        for(Order x:X){
-            UserMapper userMapper = null;
-            User user=userMapper.selectById(x.getSenderid());
-            x.setSendername(Integer.valueOf(User.class.getName()));
-            user = userMapper.selectById(x.getReceiverid());
-            x.setReceivername(Integer.valueOf(User.class.getName()));
-            user = userMapper.selectById(x.getEmployeeid());
-            x.setEmployeename(Integer.valueOf(User.class.getName()));
-        }
-        a.setRecords(X);
         return Result.success(a);
     }
-
-
 }
