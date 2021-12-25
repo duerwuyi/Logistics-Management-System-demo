@@ -62,9 +62,6 @@
 
       <el-dialog v-model="dialogVisible" title="Please Enter" width="30%">
         <el-form :model="form" label-width="120px">
-          <el-form-item label="车辆ID">
-            <el-input v-model="form.carid" style="width: 80%"></el-input>
-          </el-form-item>
           <el-form-item label="货物状态">
             <el-input v-model="form.status" style="width: 80%"></el-input>
           </el-form-item>

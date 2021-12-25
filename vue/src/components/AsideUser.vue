@@ -5,7 +5,7 @@
       router
       class="el-menu-vertical-demo"
   >
-    <el-menu-item index="/orderlist">
+    <el-menu-item index="/orderforuser">
       <el-icon><icon-menu /></el-icon>
       <span>订单管理</span>
     </el-menu-item>
@@ -27,11 +27,6 @@ import {
 
 export default {
   name:"AsideUser",
-  data(){
-    return{
-
-    }
-  },
   components: {
     Location,
     Document,

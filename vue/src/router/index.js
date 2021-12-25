@@ -9,6 +9,7 @@ import Car from "@/views/Car";
 import Driver from "@/views/Driver";
 import orderfordriver from "@/views/orderfordriver";
 import carfordriver from "@/views/Carfordriver";
+import orderforuser from "@/views/orderforuser";
 
 const routes = [
   {
@@ -44,6 +45,10 @@ const routes = [
       {path: 'carfordriver',
         name: 'carfordriver',
         component: carfordriver,
+      },
+      {path: 'orderforuser',
+        name: 'orderforuser',
+        component: orderforuser,
       },
     ]
   },
