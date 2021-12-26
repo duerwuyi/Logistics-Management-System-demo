@@ -10,6 +10,13 @@
             </template>
           </el-input>
         </el-form-item>
+        <el-form-item prop="phonenum">
+          <el-input v-model.number="form.phonenum" placeholder="手机号码">
+            <template #prefix>
+              <el-icon class="el-input__icon"><bell /></el-icon>
+            </template>
+          </el-input>
+        </el-form-item>
         <el-form-item prop="password">
           <el-input v-model="form.password" placeholder="密码" show-password>
             <template #prefix>
@@ -41,6 +48,7 @@ import {
   Avatar,
   Lock,
   Warning,
+  Bell,
 } from '@element-plus/icons'
 import request from "../utils/request";
 import {ElMessage} from "element-plus";
@@ -53,6 +61,15 @@ export default {
     const validconf = (rule, value, callback) => {
       if (value !== this.form.password) {
         callback(new Error("密码不同！"))
+      } else {
+        callback()
+      }
+    }
+    const validnum = (rule, value, callback) => {
+      if(!Number.isInteger(value)){
+        callback(new Error("手机号要求是数字"))
+      } else if(String(value).length !== 11) {
+        callback(new Error("手机号要求11位"))
       } else {
         callback()
       }
@@ -80,6 +97,17 @@ export default {
             trigger: 'blur',
           },
         ],
+        phonenum:[
+          {
+            required: true,
+            message: '请输入手机号',
+            trigger: 'blur',
+          },
+          {
+            validator: validnum,
+            trigger: 'blur',
+          }
+        ],
         confirm: [
           {
             required: true,
@@ -98,11 +126,11 @@ export default {
     Avatar,
     Lock,
     Warning,
+    Bell,
     Vcode,
   },
   methods:{
     register(){
-
       this.$refs['form'].validate((valid) => {
         if (valid && this.isPass) {
           request.post("/api/user/register",this.form).then(res => {

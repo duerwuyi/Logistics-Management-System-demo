@@ -13,11 +13,7 @@ public class TokenUtil {
     private static final long EXPIRE_TIME= 7*24*60*60*1000;
     private static final String TOKEN_SECRET="txdy";  //密钥盐
 
-    /**
-     * 签名生成
-     * @param user
-     * @return
-     */
+
     public static String sign(User user){
         String token = null;
         try {
@@ -34,11 +30,7 @@ public class TokenUtil {
         return token;
     }
 
-    /**
-     * 签名验证
-     * @param token
-     * @return
-     */
+
     public static boolean verify(String token){
         try {
             JWTVerifier verifier = JWT.require(Algorithm.HMAC256(TOKEN_SECRET)).withIssuer("auth0").build();

@@ -91,6 +91,7 @@ public class UserController {
         if(person != null) {
             return Result.error("300","用户已存在");
         }
+        user.setAuthority("user");
         userMapper.insert(user);
         return Result.success();
     }
@@ -117,11 +118,6 @@ public class UserController {
             wrapper.like(User::getUsername, search);
         }
         Page<User> a = userMapper.selectPage(new Page<>(pageNum , pageSize), wrapper);
-        List<User> X = a.getRecords();
-        for(User x : X){
-            x.setPassword(null);
-        }
-        a.setRecords(X);//不能暴露密码
         return Result.success(a);
     }
 }

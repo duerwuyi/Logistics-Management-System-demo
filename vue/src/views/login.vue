@@ -81,8 +81,17 @@ export default {
         if(res.code ==='0'){
           this.form.username =res.data.username
           this.form.password =res.data.password
+          this.disabled = false
           this.isPass = true
-          this.login()
+          clearTimeout(this.timer);  //清除延迟执行
+          ElMessage({
+            type: 'success',
+            message: '10秒后自动登录',
+          })
+          this.timer = setInterval(()=>{   //设置延迟执行
+            this.login()
+          },10000);
+
         }
       })
     }

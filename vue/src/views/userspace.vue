@@ -1,22 +1,24 @@
 <template>
 
   <div style="padding: 150px;">
-    <el-form :model="form" label-width="120px" style="width: 700px">
-      <el-form-item label="用户名">
+    <el-form ref="userform" :model="form" label-width="120px" style="width: 700px" :rules="rules">
+      <el-form-item label="用户名" prop="username">
         <el-input v-model="form.username" style="width: 80%" ></el-input>
       </el-form-item>
-      <el-form-item label="年龄">
-        <el-input v-model="form.age" style="width: 80%"></el-input>
+      <el-form-item label="年龄" prop ="age">
+        <el-input v-model.number="form.age" style="width: 80%"></el-input>
       </el-form-item>
-      <el-form-item label="性别">
+      <el-form-item label="性别" prop="sex">
         <el-radio v-model="form.sex" label="男">男</el-radio>
         <el-radio v-model="form.sex" label="女">女</el-radio>
         <el-radio v-model="form.sex" label="未知">未知</el-radio>
       </el-form-item>
+      <el-form-item label="联系方式" prop="phonenum">
+        <el-input v-model.number="form.phonenum" style="width: 80%"></el-input>
+      </el-form-item>
     </el-form>
       <span style="margin: 150px auto">
-        <el-button @click="$router.push('/home')" style="margin: 50px 200px">Cancel</el-button>
-        <el-button type="primary" @click="save">Confirm</el-button>
+        <el-button type="primary" @click="save" style="margin: 50px 200px">Confirm</el-button>
       </span>
   </div>
 </template>
@@ -30,6 +32,20 @@ export default {
   components: {
   },
   data() {
+    const validnum = (rule, value, callback) => {
+      if(!Number.isInteger(value)){
+        callback(new Error("要求是数字"))
+      } else {
+        callback()
+      }
+    }
+    const checklen = (rule, value, callback) => {
+      if(String(this.form.phonenum).length !== 11) {
+        callback(new Error("手机号要求11位"))
+      } else {
+        callback()
+      }
+    }
     return {
       user:{},
       form:{
@@ -37,6 +53,24 @@ export default {
         username:null,
         age:null,
         sex:null,
+      },
+      rules:{
+        age:[
+          {
+            validator: validnum,
+            trigger: 'blur',
+          }
+        ],
+        phonenum: [
+          {
+            validator: validnum,
+            trigger: 'blur',
+          },
+          {
+            validator: checklen,
+            trigger: 'blur',
+          },
+        ]
       },
     }
   },
@@ -49,32 +83,40 @@ export default {
       request.post("/api/user/self", this.userStr).then(res =>{
         console.log(res)
         if(res.code === '0'){
-          this.form.username = res.data.username
-          this.form.age = res.data.age
+          this.form.username =res.data.username
+          this.form.age = Number(res.data.age)
           this.form.sex = res.data.sex
+          this.form.phonenum = Number(res.data.phonenum)
         }
       })
     }else {
       this.user = JSON.parse(userinfo)
-      this.form.username = this.user.username
-      this.form.age = this.user.age
+      this.form.username =this.user.username
+      this.form.age = Number(this.user.age)
       this.form.sex = this.user.sex
+      this.form.phonenum = Number(this.user.phonenum)
     }
   },
   methods:{
     save(){
-      this.form.id =this.user.id
-      request.put("/api/user",this.form).then(res => {
-        console.log(res)
-        if(res.code == "0"){
-          ElMessage({
-            type: 'success',
-            message: '修改成功',
-          })
-        }else{
-          ElMessage({
-            type: 'error',
-            message: res.msg,
+      this.$refs['userform'].validate((valid) =>{
+        if(valid){
+          this.form.id =this.user.id
+          request.put("/api/user",this.form).then(res => {
+            console.log(res)
+            if(res.code == "0"){
+              ElMessage({
+                type: 'success',
+                message: '修改成功,自动为您跳转登录',
+              })
+              sessionStorage.clear()
+              this.$router.push('/login')
+            }else{
+              ElMessage({
+                type: 'error',
+                message: res.msg,
+              })
+            }
           })
         }
       })
