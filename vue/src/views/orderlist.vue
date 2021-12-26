@@ -261,14 +261,11 @@ export default {
         params:{
           pageNum: this.currentPage,
           pageSize:10,
-          search : this.search,
+          search : "找司机",
         },
       }).then(res => {
         this.DriverTableData=res.data.records
         this.cntDriver = res.data.total
-        this.DriverTableData = this.DriverTableData.filter(item => {
-          return item.status==="空闲"
-        })
         console.log(res)
       })
 
@@ -277,14 +274,11 @@ export default {
         params:{
           pageNum: this.currentPage,
           pageSize:10,
-          search : this.search,
+          search : "找车",
         },
       }).then(res => {
         this.CarTableData=res.data.records
         this.cntCar = res.data.total
-        this.CarTableData = this.CarTableData.filter(item => {
-          return item.status==="空闲"
-        })
         console.log(res)
       })
     },

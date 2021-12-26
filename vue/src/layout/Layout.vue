@@ -14,7 +14,7 @@
 
 <script>
 import Header from "@/components/Header";
-import Aside from "@/components/AsideDriver";
+import Aside from "@/components/AsideAdmin";
 
 export default {
   name: "Layout",

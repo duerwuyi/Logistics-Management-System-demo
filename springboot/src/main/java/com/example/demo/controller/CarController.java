@@ -43,10 +43,9 @@ public class CarController{
                               @RequestParam(defaultValue = "") String search){
         LambdaQueryWrapper<Car> wrapper = Wrappers.<Car>lambdaQuery();
         if(StrUtil.isNotBlank(search)){
-            wrapper.like(Car::getCarname, search);
+            wrapper.like(Car::getStatus, "空闲");
         }
         Page<Car> a = carMapper.selectPage(new Page<>(pageNum , pageSize), wrapper);
         return Result.success(a);
-
     }
 }

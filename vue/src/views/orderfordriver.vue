@@ -181,8 +181,6 @@ export default {
             })
           }
         })
-        if(this.form.status === "wating"){
-        }
       }
       else{
         request.post("/api/order",this.form).then(res => {
