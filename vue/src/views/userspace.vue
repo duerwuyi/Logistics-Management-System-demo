@@ -52,6 +52,11 @@ export default {
         this.form.age = res.data.age
         this.form.sex = res.data.sex
       })
+    }else {
+      this.user = JSON.parse(userinfo)
+      this.form.username = this.user.username
+      this.form.age = this.user.age
+      this.form.sex = this.user.sex
     }
   },
   methods:{

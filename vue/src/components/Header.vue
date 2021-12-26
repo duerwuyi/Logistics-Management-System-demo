@@ -49,6 +49,9 @@ export default {
         this.user = res.data
         this.names = this.user.username
       })
+    }else{
+      this.user = JSON.parse(userinfo)
+      this.names = this.user.username
     }
   },
   methods:{
