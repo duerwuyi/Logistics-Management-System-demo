@@ -7,18 +7,13 @@ const request = axios.create({
 
 // request 拦截器
 // 可以自请求发送前对请求做一些处理
-// 比如统一加token，对请求参数统一加密
+// 比如统一加token
 request.interceptors.request.use(config => {
     config.headers['Content-Type'] = 'application/json;charset=utf-8';
-    // config.headers['token'] = user.token;  // 设置请求头
-
-    //取出sessionStorage里的缓存信息
-    let userJson = sessionStorage.getItem("user")
-    if(!userJson){
-        router.push("/login")
+    if (localStorage.getItem('Authorization')) {
+        config.headers.Authorization = localStorage.getItem('Authorization');
     }
-
-    return config
+    return config;
 }, error => {
     return Promise.reject(error)
 });
@@ -28,6 +23,11 @@ request.interceptors.request.use(config => {
 request.interceptors.response.use(
     response => {
         let res = response.data;
+        if(res === 'failed'){
+            router.push("/login")
+            alert("你没有登录")
+            return Promise.reject(error)
+        }
         // 如果是返回的文件
         if (response.config.responseType === 'blob') {
             return res

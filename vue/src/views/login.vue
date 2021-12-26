@@ -39,6 +39,7 @@ import request from "../utils/request";
 import {ElMessage} from "element-plus";
 import { ref } from "vue";
 import Vcode from "vue3-puzzle-vcode";
+import {mapMutations} from "vuex";
 
 
 export default {
@@ -47,6 +48,7 @@ export default {
     return{
       Vcode,
       form:{},
+      userToken:'',
       rules: {
         username: [
           {
@@ -71,17 +73,21 @@ export default {
     Vcode,
   },
   methods:{
+    ...mapMutations(['changeLogin']),
     login(){
       this.$refs['form'].validate((valid) => {
-        if (valid) {
+        if (valid && this.isPass) {
           request.post("/api/user/login",this.form).then(res => {
             console.log(res)
+            this.userToken = res.data.token
+            // 将用户token保存到vuex中
+            this.changeLogin({ Authorization:this.userToken })
             if(res.code == "0"){
               ElMessage({
                 type: 'success',
                 message: '登录成功',
               })
-              sessionStorage.setItem("user", JSON.stringify(res.data))
+              sessionStorage.setItem("user", JSON.stringify(res.data.user))
               this.$router.push("/")
             }else{
               ElMessage({
@@ -90,6 +96,11 @@ export default {
               })
             }
           })
+        }else{
+          ElMessage({
+            type: 'error',
+            message: '请输入验证码！',
+          })
         }
       })
     },
@@ -97,7 +108,7 @@ export default {
   setup() {
     const isShow = ref(false);
     const disabled = ref(true);
-
+    const isPass = ref(false);
     const onShow = () => {
       isShow.value = true;
     };
@@ -109,11 +120,13 @@ export default {
     const onSuccess = () => {
       onClose(); // 验证成功，需要手动关闭模态框
       disabled.value = false;
+      isPass.value = true;
     };
 
     return {
       isShow,
       disabled,
+      isPass,
       onShow,
       onClose,
       onSuccess

@@ -106,9 +106,9 @@ export default {
           search : this.search,
         },
       }).then(res => {
+        console.log(res)
         this.tableData=res.data.records
         this.total = res.data.total
-        console.log(res)
       })
     },
     save(){

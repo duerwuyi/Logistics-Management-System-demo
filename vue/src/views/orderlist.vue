@@ -246,8 +246,6 @@ export default {
         this.total = res.data.total
         console.log(res)
       })
-
-
       //获取司机信息
       request.get("/api/driver",{
         params:{

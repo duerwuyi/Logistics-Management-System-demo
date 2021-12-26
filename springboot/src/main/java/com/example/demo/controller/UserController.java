@@ -7,10 +7,14 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.demo.common.Result;
 import com.example.demo.entity.User;
 import com.example.demo.mapper.UserMapper;
+import com.example.demo.utils.TokenUtil;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.sql.Wrapper;
+import java.util.HashMap;
 import java.util.List;
 
 @RestController//controller里面的方法都以json格式输出
@@ -21,15 +25,32 @@ public class UserController {
     UserMapper userMapper;
 
     @PostMapping("/login")//处理/login
-    public Result<?> login(@RequestBody User user) {
+    public Result<?> login(@RequestBody User user)throws JsonProcessingException {
+        String token= TokenUtil.sign(user);
         Wrappers.<User>lambdaQuery().eq(User::getUsername,user.getUsername()).eq(User::getPassword,user.getPassword());
         User person = userMapper.selectOne(Wrappers.<User>lambdaQuery().eq(User::getUsername,user.getUsername()).eq(User::getPassword,user.getPassword()));
         if(person == null) {
             return Result.error("1","用户名或密码错误");
         }
         person.setPassword(null);
+        HashMap<String,Object> hs=new HashMap<>();
+        hs.put("token",token);
+        hs.put("user",person);
+        return Result.success(hs);
+    }
+
+    @PostMapping("/self")//处理所有的需要验证用户的情况，id储存在sessionStorage里，sessionStorage不可信
+    public Result<?> getMyself(@RequestBody String author) {
+        String username =TokenUtil.getUsername(author);
+        Wrappers.<User>lambdaQuery().eq(User::getUsername,username);
+        User person = userMapper.selectOne(Wrappers.<User>lambdaQuery().eq(User::getUsername,username));
+        if(person == null) {
+            return Result.error("202","用户信息错误");
+        }
+        person.setPassword(null);//不能暴露密码
         return Result.success(person);
     }
+
 
     @PostMapping("/who")//处理所有的需要验证用户的情况，id储存在sessionStorage里，sessionStorage不可信
     public Result<?> getUser(@RequestBody Integer id) {
@@ -43,12 +64,22 @@ public class UserController {
 
     @PostMapping("")
     public Result<?> save(@RequestBody User user){
+        Wrappers.<User>lambdaQuery().eq(User::getUsername,user.getUsername());
+        User person = userMapper.selectOne(Wrappers.<User>lambdaQuery().eq(User::getUsername,user.getUsername()));
+        if(person != null) {
+            return Result.error("300","用户已存在");
+        }
         userMapper.insert(user);
         return Result.success();
     }
 
     @PostMapping("/register")
     public Result<?> register(@RequestBody User user){
+        Wrappers.<User>lambdaQuery().eq(User::getUsername,user.getUsername());
+        User person = userMapper.selectOne(Wrappers.<User>lambdaQuery().eq(User::getUsername,user.getUsername()));
+        if(person != null) {
+            return Result.error("300","用户已存在");
+        }
         userMapper.insert(user);
         return Result.success();
     }

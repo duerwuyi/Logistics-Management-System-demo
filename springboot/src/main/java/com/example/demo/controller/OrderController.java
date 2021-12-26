@@ -23,7 +23,6 @@ public class OrderController {
 
     @Resource
     OrderMapper orderMapper;
-    UserMapper userMapper;
 
     @PostMapping
     public Result<?> save(@RequestBody Order order){

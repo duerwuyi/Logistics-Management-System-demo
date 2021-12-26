@@ -13,7 +13,7 @@
           <template #dropdown>
             <el-dropdown-menu>
               <el-dropdown-item @click="$router.push('/userspace')">个人信息</el-dropdown-item>
-              <el-dropdown-item @click="$router.push('/login')">退出系统</el-dropdown-item>
+              <el-dropdown-item @click="exit">退出系统</el-dropdown-item>
             </el-dropdown-menu>
           </template>
         </el-dropdown>
@@ -23,6 +23,7 @@
 
 <script>
 import { ArrowDown } from "@element-plus/icons";
+import request from "../utils/request";
 
 export default {
   name: "Header",
@@ -34,15 +35,27 @@ export default {
     return{
       user:{},
       names:"",
+      userStr:"",
     }
   },
   created() {
-    let userStr = sessionStorage.getItem("user")
-    if(userStr){
-      this.user = JSON.parse(userStr)
-      this.names = this.user.username
-    }else{
-     this.user = "无该用户"
+    //这一段代码比较重要，是通过token去后端请求其user信息
+    this.userStr = localStorage.getItem('Authorization')
+    let userinfo = sessionStorage.getItem("user")
+    if(!userinfo){
+      console.log(JSON.stringify(this.userStr))
+      request.post("/api/user/self", this.userStr).then(res =>{
+        console.log(res)
+        this.user = res.data
+        this.names = this.user.username
+      })
+    }
+  },
+  methods:{
+    exit(){
+      localStorage.removeItem('Authorization')
+      sessionStorage.clear()
+      this.$router.push("/login")
     }
   }
 }

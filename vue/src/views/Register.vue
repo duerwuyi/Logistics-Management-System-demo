@@ -104,7 +104,7 @@ export default {
     register(){
 
       this.$refs['form'].validate((valid) => {
-        if (valid) {
+        if (valid && this.isPass) {
           request.post("/api/user/register",this.form).then(res => {
             console.log(res)
             if(res.code == "0"){
@@ -127,6 +127,7 @@ export default {
   setup() {
     const isShow = ref(false);
     const disabled = ref(true);
+    const isPass = ref(false);
 
     const onShow = () => {
       isShow.value = true;
@@ -139,11 +140,13 @@ export default {
     const onSuccess = () => {
       onClose(); // 验证成功，需要手动关闭模态框
       disabled.value = false;
+      isPass.value = true;
     };
 
     return {
       isShow,
       disabled,
+      isPass,
       onShow,
       onClose,
       onSuccess

@@ -41,21 +41,16 @@ export default {
     }
   },
   created() {
-    let userStr = sessionStorage.getItem("user")
-    console.log(userStr)
-    if(userStr){
-      this.user = JSON.parse(userStr)
-      request.post("/api/user/who",this.user.id).then(res =>{
+    //这一段代码比较重要，是通过token去后端请求其user信息
+    this.userStr = localStorage.getItem('Authorization')
+    let userinfo = sessionStorage.getItem("user")
+    if(!userinfo){
+      console.log(JSON.stringify(this.userStr))
+      request.post("/api/user/self", this.userStr).then(res =>{
         console.log(res)
         this.form.username = res.data.username
         this.form.age = res.data.age
         this.form.sex = res.data.sex
-      })
-    }else{
-      this.$router.push("/login")
-      ElMessage({
-        type: 'error',
-        message: '你没有登录！',
       })
     }
   },
