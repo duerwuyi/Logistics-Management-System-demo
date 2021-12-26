@@ -37,6 +37,7 @@
       <!--      <el-table-column prop="weight" label="货物重量" />-->
       <!--      <el-table-column prop="cost" label="物流费用" />-->
       <el-table-column prop="status" label="货物状态" />
+      <el-table-column prop="checkfinish" label="是否收件" />
 
       <el-table-column label="Operations">
         <template #default="scope">
@@ -63,7 +64,9 @@
       <el-dialog v-model="dialogVisible" title="Please Enter" width="30%">
         <el-form :model="form" label-width="120px">
           <el-form-item label="货物状态">
-            <el-input v-model="form.status" style="width: 80%"></el-input>
+            <el-radio v-model="form.status" label="preparing">preparing</el-radio>
+            <el-radio v-model="form.status" label="sending">sending</el-radio>
+            <el-radio v-model="form.status" label="waiting">waiting</el-radio>
           </el-form-item>
         </el-form>
 
@@ -130,7 +133,7 @@ export default {
           })
           request.post("/api/user/who", item.senderid).then(res => {
             if (res.code === "0") {
-              item.snedername = res.data.username
+              item.sendername = res.data.username
             }
           })
           request.post("/api/user/who", item.receiverid).then(res => {
@@ -179,6 +182,8 @@ export default {
             })
           }
         })
+        if(this.form.status === "wating"){
+        }
       }
       else{
         request.post("/api/order",this.form).then(res => {

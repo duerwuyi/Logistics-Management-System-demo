@@ -19,6 +19,7 @@ public class Order {
     private String sendadd;
     private String receadd;
     private String status;
+    private String checkfinish;
     private Integer weight;
     private Integer cost;
 }

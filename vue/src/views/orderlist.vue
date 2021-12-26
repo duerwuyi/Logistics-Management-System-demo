@@ -31,6 +31,7 @@
       <el-table-column prop="sendadd" label="发件方地址" />
       <el-table-column prop="receadd" label="收件方地址" />
       <el-table-column prop="status" label="货物状态" />
+      <el-table-column prop="checkfinish" label="是否收件" />
 
       <el-table-column label="Operations">
         <template #default="scope">
@@ -59,14 +60,28 @@
           <el-form-item label="货物名称">
             <el-input v-model="form.ordername" style="width: 80%"></el-input>
           </el-form-item>
+
           <el-form-item label="发件方ID">
             <el-input v-model="form.senderid" style="width: 80%"></el-input>
+          </el-form-item>
+          <el-form-item label="发件方姓名">
+            <el-input v-model="form.sendername" style="width: 80%"></el-input>
+          </el-form-item>
+          <el-form-item label="发件方联系方式">
+            <el-input v-model="form.senderphone" style="width: 80%"></el-input>
           </el-form-item>
           <el-form-item type="textarea" label="发件方地址">
             <el-input v-model="form.sendadd" style="width: 80%"></el-input>
           </el-form-item>
+
           <el-form-item label="收件方ID">
             <el-input v-model="form.receiverid" style="width: 80%"></el-input>
+          </el-form-item>
+          <el-form-item label="收件方姓名">
+            <el-input v-model="form.receivername" style="width: 80%"></el-input>
+          </el-form-item>
+          <el-form-item label="收件方联系方式">
+            <el-input v-model="form.receiverphone" style="width: 80%"></el-input>
           </el-form-item>
           <el-form-item type="textarea" label="收件方地址">
             <el-input v-model="form.receadd" style="width: 80%"></el-input>
@@ -77,6 +92,12 @@
               <el-input v-model="form.employeeid" style="width: 80%"></el-input>
               <el-button size="mini" @click="getFreeDriver(scope.row)">选择派送员</el-button>
             </template>
+          </el-form-item>
+          <el-form-item label="派送员姓名">
+            <el-input v-model="form.employeename" style="width: 80%"></el-input>
+          </el-form-item>
+          <el-form-item label="派送员联系方式">
+            <el-input v-model="form.employeephone" style="width: 80%"></el-input>
           </el-form-item>
 
           <el-form-item label="车辆ID">
@@ -93,7 +114,13 @@
             <el-input v-model="form.cost" style="width: 80%"></el-input>
           </el-form-item>
           <el-form-item label="货物状态">
-            <el-input v-model="form.status" style="width: 80%"></el-input>
+            <el-radio v-model="form.status" label="preparing">preparing</el-radio>
+            <el-radio v-model="form.status" label="sending">sending</el-radio>
+            <el-radio v-model="form.status" label="waiting">waiting</el-radio>
+          </el-form-item>
+          <el-form-item label="是否收件">
+            <el-radio v-model="form.checkfinish" label="是">是</el-radio>
+            <el-radio v-model="form.checkfinish" label="否">否</el-radio>
           </el-form-item>
         </el-form>
 
@@ -191,7 +218,7 @@ export default {
           })
           request.post("/api/user/who", item.senderid).then(res => {
             if (res.code === "0") {
-              item.snedername = res.data.username
+              item.sendername = res.data.username
             }
           })
           request.post("/api/user/who", item.receiverid).then(res => {
