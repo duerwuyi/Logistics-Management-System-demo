@@ -19,6 +19,7 @@
     </el-form>
       <span style="margin: 150px auto">
         <el-button type="primary" @click="save" style="margin: 50px 200px">Confirm</el-button>
+        <p>p.s修改密码请联系管理员，手机号XXX,邮箱XXX</p>
       </span>
   </div>
 </template>
