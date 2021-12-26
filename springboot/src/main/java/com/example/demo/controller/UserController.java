@@ -60,6 +60,7 @@ public class UserController {
         }
         person.setPassword(null);//不能暴露密码
         return Result.success(person);
+
     }
 
     @PostMapping("")

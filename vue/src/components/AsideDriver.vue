@@ -43,5 +43,6 @@ export default {
     IconMenu,
     Van,
   },
+
 }
 </script>

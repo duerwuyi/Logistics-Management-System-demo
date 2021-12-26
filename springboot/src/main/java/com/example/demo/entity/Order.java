@@ -21,5 +21,6 @@ public class Order {
     private String status;
     private String checkfinish;
     private Integer weight;
+
     private Integer cost;
 }

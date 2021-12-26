@@ -355,5 +355,6 @@ export default {
       this.load()
     },
   },
+
 }
 </script>

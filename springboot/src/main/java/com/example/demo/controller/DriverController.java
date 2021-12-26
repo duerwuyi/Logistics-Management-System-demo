@@ -42,5 +42,6 @@ public class DriverController {
         LambdaQueryWrapper<Driver> wrapper = Wrappers.<Driver>lambdaQuery();
         Page<Driver> a = driverMapper.selectPage(new Page<>(pageNum , pageSize), wrapper);
         return Result.success(a);
+
     }
 }

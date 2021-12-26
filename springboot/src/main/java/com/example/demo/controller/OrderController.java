@@ -52,5 +52,6 @@ public class OrderController {
         }
         Page<Order> a = orderMapper.selectPage(new Page<>(pageNum , pageSize), wrapper);
         return Result.success(a);
+
     }
 }

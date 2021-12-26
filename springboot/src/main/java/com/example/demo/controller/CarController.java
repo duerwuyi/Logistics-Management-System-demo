@@ -47,5 +47,6 @@ public class CarController{
         }
         Page<Car> a = carMapper.selectPage(new Page<>(pageNum , pageSize), wrapper);
         return Result.success(a);
+
     }
 }

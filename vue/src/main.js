@@ -12,3 +12,4 @@ import axios from "axios";
 axios.defaults.withCredentials = true;
 
 createApp(App).use(store).use(router).use(ElementPlus, {locale: zhCn,}).mount('#app')
+
