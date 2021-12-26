@@ -50,6 +50,9 @@
           <el-form-item label="年龄">
             <el-input v-model="form.age" style="width: 80%"></el-input>
           </el-form-item>
+          <el-form-item label="联系电话">
+            <el-input v-model="form.phonenum" style="width: 80%"></el-input>
+          </el-form-item>
 
           <el-form-item label="性别">
             <el-radio v-model="form.sex" label="男">男</el-radio>
