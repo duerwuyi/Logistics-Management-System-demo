@@ -1,24 +1,21 @@
 <template>
   <div style="padding: 10px">
-<!--    功能区域-->
+    <!--    功能区域-->
     <div style="margin: 10px 0">
       <el-button type="primary" @click="add">新增</el-button>
       <el-button type="primary">导入</el-button>
       <el-button type="primary">导出</el-button>
     </div>
-<!--    搜索区域-->
+    <!--    搜索区域-->
     <div style="margin: 10px 0">
       <el-input v-model="search" placeholder="Please input"  style="width: 20%" clearable />
       <el-button type="primary" style="margin-left: 7px" @click="load">查询</el-button>
     </div>
-
-
     <el-table :data="tableData" border stripe style="width: 100%">
       <el-table-column prop="id" label="ID" sortable />
-      <el-table-column prop="username" label="用户名" />
-      <el-table-column prop="age" label="年龄" />
-      <el-table-column prop="sex" label="性别" />
-      <el-table-column prop="phonenum" label="电话号码" />
+      <el-table-column prop="carname" label="车名"/>
+      <el-table-column prop="maxweight" label="最大载重" />
+      <el-table-column prop="status" label="使用状态" />
       <el-table-column label="Operations">
         <template #default="scope">
           <el-button size="mini" @click="handleEdit(scope.row)">Edit</el-button>
@@ -27,9 +24,9 @@
               <el-button size="mini" type="danger">Delete</el-button>
             </template>
           </el-popconfirm>
-          <el-button size="mini" @click="findHisOrder(scope.row.id)">查看关联订单</el-button>
         </template>
       </el-table-column>
+
     </el-table>
 
     <div>
@@ -42,33 +39,19 @@
           background >
       </el-pagination>
 
-      <el-dialog v-model="dialogTableVisible" title="有关Ta的订单（最近10条）">
-        <el-table :data="gridData">
-          <el-table-column prop="id" label="ID" sortable />
-          <el-table-column prop="ordername" label="货物名称" />
-          <el-table-column prop="status" label="货物状态" />
-          <el-table-column prop="checkfinish" label="是否收件" />
-        </el-table>
-      </el-dialog>
-
       <el-dialog v-model="dialogVisible" title="Please Enter" width="30%">
         <el-form :model="form" label-width="120px">
 
-          <el-form-item label="用户名">
-            <el-input v-model="form.username" style="width: 80%"></el-input>
+          <el-form-item label="车名">
+            <el-input v-model="form.carname" style="width: 80%"></el-input>
           </el-form-item>
-          <el-form-item label="年龄">
-            <el-input v-model="form.age" style="width: 80%"></el-input>
+          <el-form-item label="最大载重">
+            <el-input v-model="form.maxweight" style="width: 80%"></el-input>
           </el-form-item>
-          <el-form-item label="联系电话">
-            <el-input v-model="form.phonenum" style="width: 80%"></el-input>
+          <el-form-item label="使用状态">
+            <el-input v-model="form.status" style="width: 80%"></el-input>
           </el-form-item>
 
-          <el-form-item label="性别">
-            <el-radio v-model="form.sex" label="男">男</el-radio>
-            <el-radio v-model="form.sex" label="女">女</el-radio>
-            <el-radio v-model="form.sex" label="未知">未知</el-radio>
-          </el-form-item>
         </el-form>
         <template #footer>
           <span class="dialog-footer">
@@ -83,26 +66,22 @@
 </template>
 
 <script>
-
-
 import request from "../utils/request";
 import {ElMessage} from "element-plus";
 
 export default {
-  name: 'Home',
+  name: 'Car',
   components: {
 
   },
   data() {
     return {
       form:{},
-      dialogTableVisible:false,
       dialogVisible:false,
       search: '',
       currentPage: 1 ,
       total: 10 ,
       tableData: [],
-      gridData:[],
     }
   },
   created(){
@@ -113,38 +92,22 @@ export default {
       this.dialogVisible = true
       this.form={}
     },
-    findHisOrder(id){
-      request.get("/api/order",{
-        params:{
-          pageNum: 1,
-          pageSize:10,
-          search : "",
-          Flag: 'user',
-          userID: id,
-        },
-      }).then(res=>{
-        if(res.code === '0'){
-          this.dialogTableVisible=true
-          this.gridData = res.data.records
-        }
-      })
-    },
     load(){
-      request.get("/api/user",{
+      request.get("/api/car",{
         params:{
           pageNum: this.currentPage,
           pageSize:10,
           search : this.search,
         },
       }).then(res => {
-        console.log(res)
         this.tableData=res.data.records
         this.total = res.data.total
+        console.log(res)
       })
     },
     save(){
       if(this.form.id){
-        request.put("/api/user",this.form).then(res => {
+        request.put("/api/car",this.form).then(res => {
           console.log(res)
           if(res.code == "0"){
             ElMessage({
@@ -157,11 +120,10 @@ export default {
               message: res.msg,
             })
           }
-          this.load()
         })
       }
       else{
-        request.post("/api/user",this.form).then(res => {
+        request.post("/api/car",this.form).then(res => {
           console.log(res)
           if(res.code == "0"){
             ElMessage({
@@ -174,10 +136,10 @@ export default {
               message: res.msg,
             })
           }
-          this.load()
         })
       }
       this.dialogVisible = false
+      this.load()
     },
     handleEdit(row) {
       this.form = JSON.parse(JSON.stringify(row))
@@ -185,7 +147,7 @@ export default {
     },
     HandleDelete(id) {
       console.log(id)
-      request.delete("/api/user/" + id).then(res => {
+      request.delete("/api/car/" + id).then(res => {
         console.log(res)
         if(res.code == "0"){
           ElMessage({
@@ -198,8 +160,8 @@ export default {
             message: res.msg,
           })
         }
-        this.load()
       })
+      this.load()
     },
     handleCurrentChange(){
       this.load()
@@ -207,4 +169,5 @@ export default {
   },
 
 }
+
 </script>

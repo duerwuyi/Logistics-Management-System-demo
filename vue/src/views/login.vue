@@ -81,6 +81,8 @@ export default {
         if(res.code ==='0'){
           this.form.username =res.data.username
           this.form.password =res.data.password
+          this.isPass = true
+          this.login()
         }
       })
     }

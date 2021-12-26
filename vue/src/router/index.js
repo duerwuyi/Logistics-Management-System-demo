@@ -91,6 +91,7 @@ const router = createRouter({
   routes
 })
 
+const user = sessionStorage.getItem('user')
 
 router.beforeEach((to, from, next) => {
   if (to.path === '/login' || to.path === '/register' || to.path === '/404' ) {

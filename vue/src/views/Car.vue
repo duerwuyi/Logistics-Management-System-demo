@@ -120,6 +120,7 @@ export default {
               message: res.msg,
             })
           }
+          this.load()
         })
       }
       else{
@@ -136,10 +137,10 @@ export default {
               message: res.msg,
             })
           }
+          this.load()
         })
       }
       this.dialogVisible = false
-      this.load()
     },
     handleEdit(row) {
       this.form = JSON.parse(JSON.stringify(row))
@@ -160,8 +161,8 @@ export default {
             message: res.msg,
           })
         }
+        this.load()
       })
-      this.load()
     },
     handleCurrentChange(){
       this.load()

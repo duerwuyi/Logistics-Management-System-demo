@@ -40,6 +40,12 @@ public class OrderController {
         return Result.success();
     }
 
+    @PostMapping("/deleteAll")
+    public Result<?> deleteAll(@RequestBody List<Integer> ids){
+        orderMapper.deleteBatchIds(ids);
+        return Result.success();
+    }
+
     @GetMapping
     public Result<?> findPage(@RequestParam(defaultValue = "1") Integer pageNum ,
                               @RequestParam(defaultValue = "10") Integer pageSize ,

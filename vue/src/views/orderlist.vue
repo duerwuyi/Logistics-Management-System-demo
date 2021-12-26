@@ -5,6 +5,11 @@
       <el-button type="primary" @click="add">新增</el-button>
       <el-button type="primary">导入</el-button>
       <el-button type="primary">导出</el-button>
+      <el-popconfirm title="Are you sure to delete this?" @confirm="deleteAll">
+        <template #reference>
+          <el-button type="danger">批量删除</el-button>
+        </template>
+      </el-popconfirm>
     </div>
     <!--    搜索区域-->
     <div style="margin: 10px 0">
@@ -13,7 +18,8 @@
     </div>
 
 
-    <el-table :data="tableData" border stripe style="width: 100%">
+    <el-table :data="tableData" border stripe style="width: 100%" @selection-change="handleSelectionChange">
+      <el-table-column type="selection" width="55" />
       <el-table-column type="expand">
         <template #default="props">
           <el-card class="box-card" style="width:600px; justify-content: center">
@@ -194,6 +200,7 @@ export default {
       CarTableData:[],
       Flag: 'admin',
       user:{},
+      multipleSelection:[],
     }
   },
   created(){
@@ -282,6 +289,32 @@ export default {
         console.log(res)
       })
     },
+    deleteAll(){
+      if(!this.multipleSelection.length){
+        ElMessage({
+          type: 'error',
+          message: '没有选中！',
+        })
+        return
+      }
+      request.post("/api/order/deleteAll", this.multipleSelection).then(res =>{
+        if(res.code === '0'){
+          ElMessage({
+            type: 'success',
+            message: '成功',
+          })
+        }else{
+          ElMessage({
+            type: 'error',
+            message: res.msg,
+          })
+        }
+        this.load()
+      })
+    },
+    handleSelectionChange(val){
+      this.multipleSelection = val.map(v => v.id)
+    },
     save(){
       console.log(this.form)
       if(this.form.id){
@@ -297,6 +330,7 @@ export default {
               message: res.msg,
             })
           }
+          this.load()
         })
       }
       else{
@@ -313,10 +347,10 @@ export default {
               message: res.msg,
             })
           }
+          this.load()
         })
       }
       this.dialogVisible = false
-      this.load()
     },
     handleEdit(row) {
       this.form = JSON.parse(JSON.stringify(row))
@@ -340,7 +374,6 @@ export default {
     HandleDelete(id) {
       console.log(id)
       request.delete("/api/order/" + id).then(res => {
-        console.log(res)
         if(res.code == "0"){
           ElMessage({
             type: 'success',
@@ -352,8 +385,8 @@ export default {
             message: res.msg,
           })
         }
+        this.load()
       })
-      this.load()
     },
     handleCurrentChange(){
       this.load()
