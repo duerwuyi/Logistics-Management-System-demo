@@ -56,6 +56,9 @@
 
       <el-dialog v-model="dialogVisible" title="Please Enter" width="30%">
         <el-form :model="form" label-width="120px">
+          <el-form-item label="货物名称">
+            <el-input v-model="form.ordername" style="width: 80%"></el-input>
+          </el-form-item>
           <el-form-item label="发件方ID">
             <el-input v-model="form.senderid" style="width: 80%"></el-input>
           </el-form-item>
@@ -117,6 +120,7 @@ export default {
       currentPage: 1 ,
       total: 10 ,
       tableData: [],
+      Flag: 'user',
       user:{},
     }
   },
@@ -140,6 +144,8 @@ export default {
           pageNum: this.currentPage,
           pageSize:10,
           search : this.search,
+          Flag: this.Flag,
+          userID: this.user.id,
         },
       }).then(res => {
         res.data.records.forEach(function (item) {
@@ -176,10 +182,6 @@ export default {
         })
         this.tableData=res.data.records
         this.total = res.data.total
-        var t1 = this.user.id
-        this.tableData = this.tableData.filter(item => {
-          return item.receiverid === t1 || item.senderid === t1
-        })
       })
     },
     save(){
@@ -244,7 +246,6 @@ export default {
       this.load()
     },
   },
-
 }
 </script>
 

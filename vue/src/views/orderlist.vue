@@ -192,9 +192,17 @@ export default {
       DriverTableData:[],
       cntCar: 10,
       CarTableData:[],
+      Flag: 'admin',
+      user:{},
     }
   },
   created(){
+    let userStr = sessionStorage.getItem("user")
+    if(userStr){
+      this.user = JSON.parse(userStr)
+    }else{
+      this.user = "无该用户"
+    }
     this.load()
   },
   methods :{
@@ -207,7 +215,9 @@ export default {
         params:{
           pageNum: this.currentPage,
           pageSize:10,
-          search : this.search,
+          search: this.search,
+          Flag: this.Flag,
+          userID: this.user.id,
         },
       }).then(res => {
         res.data.records.forEach(function (item){
@@ -355,6 +365,5 @@ export default {
       this.load()
     },
   },
-
 }
 </script>

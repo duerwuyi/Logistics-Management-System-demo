@@ -99,6 +99,7 @@ export default {
       currentPage: 1 ,
       total: 10 ,
       tableData: [],
+      Flag: 'driver',
       user:{},
     }
   },
@@ -122,7 +123,9 @@ export default {
         params:{
           pageNum: this.currentPage,
           pageSize:10,
-          search : this.search,
+          search: this.search,
+          Flag: this.Flag,
+          userID: this.user.id,
         },
       }).then(res => {
         res.data.records.forEach(function (item) {
@@ -159,10 +162,6 @@ export default {
         })
         this.tableData = res.data.records
         this.total = res.data.total
-        var t1 = this.user.id
-        this.tableData = this.tableData.filter(item => {
-          return item.employeeid === t1
-        })
         console.log(res)
       })
     },
@@ -230,7 +229,6 @@ export default {
       this.load()
     },
   },
-
 }
 </script>
 

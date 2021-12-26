@@ -152,7 +152,6 @@ export default {
       onSuccess
     };
   }
-
 }
 </script>
 
