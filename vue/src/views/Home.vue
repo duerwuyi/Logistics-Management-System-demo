@@ -18,6 +18,7 @@
       <el-table-column prop="username" label="用户名" />
       <el-table-column prop="age" label="年龄" />
       <el-table-column prop="sex" label="性别" />
+      <el-table-column prop="phonenum" label="电话号码" />
       <el-table-column label="Operations">
         <template #default="scope">
           <el-button size="mini" @click="handleEdit(scope.row)">Edit</el-button>

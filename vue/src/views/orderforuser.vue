@@ -16,9 +16,9 @@
       <el-table-column type="expand">
         <template #default="props">
           <el-card class="box-card" style="width:600px; justify-content: center">
-            <p>发件方ID: {{ props.row.senderid }},发件人用户名：{{ props.row.sendername }}</p>
-            <p>收件方ID: {{ props.row.receiverid }},收件人用户名：{{ props.row.receivername }}</p>
-            <p>派送员ID: {{ props.row.employeeid }},派送员用户名：{{ props.row.employeename }}</p>
+            <p>发件方ID: {{ props.row.senderid }},发件人用户名：{{ props.row.sendername }},发件人电话：{{props.row.senderphone}}</p>
+            <p>收件方ID: {{ props.row.receiverid }},收件人用户名：{{ props.row.receivername }},收件人人电话：{{props.row.receiverphone}}</p>
+            <p>派送员ID: {{ props.row.employeeid }},派送员用户名：{{ props.row.employeename }},派送员电话：{{props.row.employeephone}}</p>
             <p>车辆ID：{{ props.row.carid }} </p>
             <p>货物重量：{{ props.row.weight }} </p>
             <p>物流费用：{{ props.row.cost }} </p>
@@ -128,6 +128,21 @@ export default {
           request.post("/api/user/who", item.receiverid).then(res => {
             if (res.code === "0") {
               item.receivername = res.data.username
+            }
+          })
+          request.post("/api/user/who", item.employeeid).then(res => {
+            if (res.code === "0") {
+              item.employeephone = res.data.phonenum
+            }
+          })
+          request.post("/api/user/who", item.senderid).then(res => {
+            if (res.code === "0") {
+              item.senderphone = res.data.phonenum
+            }
+          })
+          request.post("/api/user/who", item.receiverid).then(res => {
+            if (res.code === "0") {
+              item.receiverphone = res.data.phonenum
             }
           })
         })
