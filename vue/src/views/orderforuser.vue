@@ -138,6 +138,9 @@ export default {
       this.dialogVisible = true
       this.form={}
     },
+    mounted(){
+      document.title="订单管理"
+    },
     load(){
       request.get("/api/order",{
         params:{

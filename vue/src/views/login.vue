@@ -96,6 +96,9 @@ export default {
       })
     }
   },
+  mounted() {
+    document.title='物流速运'
+  },
   methods:{
     ...mapMutations(['changeLogin']),
     login(){

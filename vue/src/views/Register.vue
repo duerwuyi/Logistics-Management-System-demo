@@ -129,6 +129,9 @@ export default {
     Bell,
     Vcode,
   },
+  mounted() {
+    document.title="注册"
+  },
   methods:{
     register(){
       this.$refs['form'].validate((valid) => {

@@ -212,12 +212,14 @@ export default {
     }
     this.load()
   },
+  mounted(){
+    document.title='订单管理'
+  },
   methods :{
     add(){
       this.dialogVisible = true
       this.form={}
-    },
-    load(){
+    },    load(){
       request.get("/api/order",{
         params:{
           pageNum: this.currentPage,

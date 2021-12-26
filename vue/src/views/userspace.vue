@@ -97,6 +97,9 @@ export default {
       this.form.phonenum = Number(this.user.phonenum)
     }
   },
+  mounted(){
+    document.title='个人信息'
+  },
   methods:{
     save(){
       this.$refs['userform'].validate((valid) =>{

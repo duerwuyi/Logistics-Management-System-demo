@@ -187,6 +187,9 @@ export default {
   mounted() {
     document.title='Home'
   },
+  mounted() {
+    document.title='物流管理中心'
+  },
   methods :{
     add(){
       this.dialogVisible = true

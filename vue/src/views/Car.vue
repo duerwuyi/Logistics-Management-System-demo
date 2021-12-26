@@ -87,6 +87,9 @@ export default {
   created(){
     this.load()
   },
+  mounted() {
+    document.title='车辆管理'
+  },
   methods :{
     add(){
       this.dialogVisible = true

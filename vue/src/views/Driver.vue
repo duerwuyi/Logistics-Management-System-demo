@@ -78,6 +78,9 @@ export default {
     //   this.keyNum++;
     // },1000);
   },
+  mounted() {
+    document.title='司机管理'
+  },
   methods :{
     add(){
       this.dialogVisible = true

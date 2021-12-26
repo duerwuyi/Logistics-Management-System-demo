@@ -113,6 +113,9 @@ export default {
     }
     this.load()
   },
+  mounted(){
+    document.title="订单管理"
+  },
   methods :{
     add(){
       this.dialogVisible = true
