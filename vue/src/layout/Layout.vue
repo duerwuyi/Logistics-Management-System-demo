@@ -5,7 +5,9 @@
   <!--主体-->
   <div style="display: flex">
     <!--侧边栏-->
-    <Aside/>
+    <AsideAdmin v-if="user.authority === 'admin'" />
+    <AsideUser v-if="user.authority === 'user'" />
+    <AsideDriver v-if="user.authority === 'employee'" />
     <!--内容-->
     <router-view style="flex: 1"/>
   </div>
@@ -14,18 +16,26 @@
 
 <script>
 import Header from "@/components/Header";
-import Aside from "@/components/AsideAdmin";
+import AsideAdmin from "../components/AsideAdmin";
+import AsideUser from "../components/AsideUser";
+import AsideDriver from "../components/AsideDriver";
 
 export default {
   name: "Layout",
   components:{
     Header,
-    Aside,
+    AsideAdmin,
+    AsideUser,
+    AsideDriver
   },
   data(){
     return{
       user:{}
     }
+  },
+  created() {
+    let userinfo = sessionStorage.getItem("user")
+    this.user = JSON.parse(userinfo)
   }
 
 }

@@ -43,11 +43,12 @@ export default {
     this.userStr = localStorage.getItem('Authorization')
     let userinfo = sessionStorage.getItem("user")
     if(!userinfo){
-      console.log(JSON.stringify(this.userStr))
+      //console.log(JSON.stringify(this.userStr))
       request.post("/api/user/self", this.userStr).then(res =>{
-        console.log(res)
-        this.user = res.data
-        this.names = this.user.username
+        if(res.code === '0'){
+          this.user = res.data
+          this.names = this.user.username
+        }
       })
     }else{
       this.user = JSON.parse(userinfo)

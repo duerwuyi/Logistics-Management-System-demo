@@ -51,6 +51,16 @@ public class UserController {
         return Result.success(person);
     }
 
+    @PostMapping("/relog")//处理所有的需要验证用户的情况，id储存在sessionStorage里，sessionStorage不可信
+    public Result<?> relog(@RequestBody String author) {
+        String username =TokenUtil.getUsername(author);
+        Wrappers.<User>lambdaQuery().eq(User::getUsername,username);
+        User person = userMapper.selectOne(Wrappers.<User>lambdaQuery().eq(User::getUsername,username));
+        if(person == null) {
+            return Result.error("202","用户信息错误");
+        }
+        return Result.success(person);
+    }
 
     @PostMapping("/who")//处理所有的需要验证用户的情况，id储存在sessionStorage里，sessionStorage不可信
     public Result<?> getUser(@RequestBody Integer id) {

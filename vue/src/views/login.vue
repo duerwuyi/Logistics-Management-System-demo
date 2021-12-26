@@ -48,6 +48,7 @@ export default {
     return{
       Vcode,
       form:{},
+      userStr:"",
       userToken:'',
       rules: {
         username: [
@@ -71,6 +72,18 @@ export default {
     Avatar,
     Lock,
     Vcode,
+  },
+  created() {
+    this.userStr = localStorage.getItem('Authorization')
+    if(this.userStr){
+      request.post("/api/user/relog", this.userStr).then(res =>{
+        console.log(res)
+        if(res.code ==='0'){
+          this.form.username =res.data.username
+          this.form.password =res.data.password
+        }
+      })
+    }
   },
   methods:{
     ...mapMutations(['changeLogin']),
