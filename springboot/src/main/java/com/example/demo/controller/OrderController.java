@@ -75,8 +75,10 @@ public class OrderController {
         User reveiver = userMapper.selectById(order.getReceiverid());
         User employee = userMapper.selectById(order.getEmployeeid());
         Car car = carMapper.selectById(order.getCarid());
+        String a =  order.getSendadd();
+        String b =order.getReceadd();
         if( sender ==null || reveiver== null || employee == null
-                || car ==null ||order.getSendadd()==null||order.getReceadd()==null)
+                || car ==null ||a ==null || b ==null )
         {
             return Result.error("304","订单没有完整填写或无效用户！");
         }

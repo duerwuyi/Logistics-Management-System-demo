@@ -5,7 +5,9 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.demo.common.Result;
+import com.example.demo.entity.Driver;
 import com.example.demo.entity.User;
+import com.example.demo.mapper.DriverMapper;
 import com.example.demo.mapper.UserMapper;
 import com.example.demo.utils.TokenUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -23,6 +25,8 @@ public class UserController {
 
     @Resource
     UserMapper userMapper;
+    @Resource
+    DriverMapper driverMapper;
 
     @PostMapping("/login")//处理/login
     public Result<?> login(@RequestBody User user)throws JsonProcessingException {
@@ -90,6 +94,13 @@ public class UserController {
             return Result.error("300","用户已存在");
         }
         userMapper.insert(user);
+        if(user.getAuthority().equals("employee")){
+            Driver employee = new Driver();
+            employee.setStatus("空闲");
+            employee.setDriverid(user.getId());
+            employee.setPhonenum(user.getPhonenum());
+            driverMapper.insert(employee);
+        }
         return Result.success();
     }
 
@@ -113,6 +124,10 @@ public class UserController {
 
     @DeleteMapping("/{id}")
     public Result<?> delete(@PathVariable Long id){
+        Driver driver= driverMapper.selectOne(Wrappers.<Driver>lambdaQuery().eq(Driver::getDriverid,id));
+        if(driver != null){
+            driverMapper.deleteById(driver.getId());
+        }
         userMapper.deleteById(id);
         return Result.success();
     }
