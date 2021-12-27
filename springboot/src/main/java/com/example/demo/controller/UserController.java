@@ -70,7 +70,16 @@ public class UserController {
         }
         person.setPassword(null);//不能暴露密码
         return Result.success(person);
+    }
 
+    @PostMapping("/nametoid")//处理所有的需要验证用户的情况，id储存在sessionStorage里，sessionStorage不可信
+    public Result<?> getUserByName(@RequestBody String name) {
+        User person = userMapper.selectOne(Wrappers.<User>lambdaQuery().eq(User::getUsername,name));
+        if(person == null) {
+            return Result.error("101","该用户不存在！");
+        }
+        person.setPassword(null);//不能暴露密码
+        return Result.success(person);
     }
 
     @PostMapping("")

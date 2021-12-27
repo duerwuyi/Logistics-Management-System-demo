@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.demo.common.Result;
 import com.example.demo.entity.Car;
+import com.example.demo.entity.Order;
 import com.example.demo.mapper.CarMapper;
 import org.springframework.web.bind.annotation.*;
 
@@ -42,8 +43,11 @@ public class CarController{
                               @RequestParam(defaultValue = "10") Integer pageSize ,
                               @RequestParam(defaultValue = "") String search){
         LambdaQueryWrapper<Car> wrapper = Wrappers.<Car>lambdaQuery();
-        if(StrUtil.isNotBlank(search)){
-            wrapper.like(Car::getStatus, "空闲");
+        if(search.equals("找车")){
+            wrapper.eq(Car::getStatus, "空闲");
+        }
+        else if(StrUtil.isNotBlank(search)){
+            wrapper.like(Car::getCarname, search);
         }
         Page<Car> a = carMapper.selectPage(new Page<>(pageNum , pageSize), wrapper);
         return Result.success(a);

@@ -1,10 +1,5 @@
 <template>
   <div style="padding: 10px">
-    <!--    功能区域-->
-    <div style="margin: 10px 0">
-      <el-button type="primary">导入</el-button>
-      <el-button type="primary">导出</el-button>
-    </div>
     <!--    搜索区域-->
     <div style="margin: 10px 0">
       <el-input v-model="search" placeholder="Please input"  style="width: 20%" clearable />
@@ -35,8 +30,9 @@
       <el-dialog v-model="dialogVisible" title="Please Enter" width="30%">
         <el-form :model="form" label-width="120px">
 
-          <el-form-item label="司机状态">
-            <el-input v-model="form.status" style="width: 80%"></el-input>
+          <el-form-item label="司机状态：">
+            <el-radio v-model="form.status" label="空闲">空闲</el-radio>
+            <el-radio v-model="form.status" label="任务中">任务中</el-radio>
           </el-form-item>
 
         </el-form>
@@ -82,10 +78,6 @@ export default {
     document.title='司机管理'
   },
   methods :{
-    add(){
-      this.dialogVisible = true
-      this.form={}
-    },
     load(){
       request.get("/api/driver",{
         params:{
@@ -107,7 +99,6 @@ export default {
       })
     },
     save(){
-      if(this.form.id){
         request.put("/api/driver",this.form).then(res => {
           console.log(res)
           if(res.code == "0"){
@@ -121,16 +112,9 @@ export default {
               message: res.msg,
             })
           }
+          this.load()
         })
-      }
-      else{
-        ElMessage({
-          type: 'error',
-          message: '没有这个司机',
-        })
-      }
       this.dialogVisible = false
-      this.load()
     },
     handleEdit(row) {
       this.form = JSON.parse(JSON.stringify(row))

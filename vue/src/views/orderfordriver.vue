@@ -3,8 +3,6 @@
     <!--    功能区域-->
     <div style="margin: 10px 0">
       <el-button type="primary" @click="add">新增</el-button>
-      <el-button type="primary">导入</el-button>
-      <el-button type="primary">导出</el-button>
     </div>
     <!--    搜索区域-->
     <div style="margin: 10px 0">
@@ -16,13 +14,51 @@
     <el-table :data="tableData" border stripe style="width: 100%">
       <el-table-column type="expand">
         <template #default="props">
-          <el-card class="box-card" style="width:600px; justify-content: center">
-            <p>发件方ID: {{ props.row.senderid }},发件人用户名：{{ props.row.sendername }},发件人电话：{{props.row.senderphone}}</p>
-            <p>收件方ID: {{ props.row.receiverid }},收件人用户名：{{ props.row.receivername }},收件人人电话：{{props.row.receiverphone}}</p>
-            <p>派送员ID: {{ props.row.employeeid }},派送员用户名：{{ props.row.employeename }},派送员电话：{{props.row.employeephone}}</p>
-            <p>车辆ID：{{ props.row.carid }} </p>
-            <p>货物重量：{{ props.row.weight }} </p>
-            <p>物流费用：{{ props.row.cost }} </p>
+          <el-card class="box-card" style="width:800px; justify-content: center; margin:0 200px">
+            <el-row>
+              <el-col :span="5">
+                发件方ID: {{ props.row.senderid }}
+              </el-col>
+              <el-col :span="8">
+                发件人用户名：{{ props.row.sendername }}
+              </el-col>
+              <el-col :span="11">
+                发件人电话：{{props.row.senderphone}}
+              </el-col>
+            </el-row>
+            <el-row>
+              <el-col :span="5">
+                收件方ID: {{ props.row.receiverid }}
+              </el-col>
+              <el-col :span="8">
+                收件人用户名：{{ props.row.receivername }}
+              </el-col>
+              <el-col :span="11">
+                收件人人电话：{{props.row.receiverphone}}
+              </el-col>
+            </el-row>
+            <el-row>
+              <el-col :span="5">
+                派送员ID：{{ props.row.employeeid }}
+              </el-col>
+              <el-col :span="8">
+                派送员用户名：{{ props.row.employeename }}
+              </el-col>
+              <el-col :span="11">
+                派送员电话：{{props.row.employeephone}}
+              </el-col>
+            </el-row>
+            <el-row>
+              <el-col :span="5">
+                车辆ID：{{ props.row.carid }}
+              </el-col>
+              <el-col :span="8">
+                货物重量：{{ props.row.weight }}
+              </el-col>
+              <el-col :span="11">
+                物流费用：{{ props.row.cost }}
+              </el-col>
+            </el-row>
           </el-card>
         </template>
       </el-table-column>
@@ -37,7 +73,7 @@
       <!--      <el-table-column prop="weight" label="货物重量" />-->
       <!--      <el-table-column prop="cost" label="物流费用" />-->
       <el-table-column prop="status" label="货物状态" />
-      <el-table-column prop="checkfinish" label="是否收件" />
+      <el-table-column prop="checkfinish" label="是否收件"  width="120px" sortable />
 
       <el-table-column label="Operations">
         <template #default="scope">

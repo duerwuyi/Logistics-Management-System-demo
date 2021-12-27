@@ -3,8 +3,6 @@
     <!--    功能区域-->
     <div style="margin: 10px 0">
       <el-button type="primary" @click="add">新增</el-button>
-      <el-button type="primary">导入</el-button>
-      <el-button type="primary">导出</el-button>
     </div>
     <!--    搜索区域-->
     <div style="margin: 10px 0">
@@ -49,7 +47,8 @@
             <el-input v-model="form.maxweight" style="width: 80%"></el-input>
           </el-form-item>
           <el-form-item label="使用状态">
-            <el-input v-model="form.status" style="width: 80%"></el-input>
+            <el-radio v-model="form.status" label="空闲">空闲</el-radio>
+            <el-radio v-model="form.status" label="正在使用">使用中</el-radio>
           </el-form-item>
 
         </el-form>

@@ -118,9 +118,7 @@ export default {
       }
     }
     const validnum = (rule, value, callback) => {
-      if(!Number.isInteger(value)){
-        callback(new Error("手机号要求是数字"))
-      } else if(String(value).length !== 11) {
+      if(String(value).length !== 11) {
         callback(new Error("手机号要求11位"))
       } else {
         callback()
@@ -185,9 +183,6 @@ export default {
     this.load()
   },
   mounted() {
-    document.title='Home'
-  },
-  mounted() {
     document.title='物流管理中心'
   },
   methods :{
@@ -203,7 +198,7 @@ export default {
           pageNum: 1,
           pageSize:10,
           search : "",
-          Flag: 'user',
+          Flag: 'userx',
           userID: id,
         },
       }).then(res=>{
@@ -219,7 +214,7 @@ export default {
           pageNum: 1,
           pageSize:10,
           search : "",
-          Flag: 'employee',
+          Flag: 'driver',
           userID: id,
         },
       }).then(res=>{

@@ -106,10 +106,10 @@ export default {
         if (valid && this.isPass) {
           request.post("/api/user/login",this.form).then(res => {
             console.log(res)
-            this.userToken = res.data.token
-            // 将用户token保存到vuex中
-            this.changeLogin({ Authorization:this.userToken })
             if(res.code == "0"){
+              this.userToken = res.data.token
+              // 将用户token保存到vuex中
+              this.changeLogin({ Authorization:this.userToken })
               ElMessage({
                 type: 'success',
                 message: '登录成功',
@@ -121,6 +121,8 @@ export default {
                 type: 'error',
                 message: res.msg,
               })
+              this.isPass = false
+              this.disabled = true
             }
           })
         }else{

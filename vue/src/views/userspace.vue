@@ -19,7 +19,7 @@
     </el-form>
       <span style="margin: 150px auto">
         <el-button type="primary" @click="save" style="margin: 50px 200px">Confirm</el-button>
-        <p>p.s修改密码请联系管理员，手机号XXX,邮箱XXX</p>
+        <p v-if="this.user.authority !== 'admin'">p.s修改密码请联系管理员，手机号XXX,邮箱XXX（为了保证安全性没有实现此功能，但是实际上已经集成到管理员的维护范围之内）</p>
       </span>
   </div>
 </template>
