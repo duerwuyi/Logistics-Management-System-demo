@@ -178,6 +178,8 @@ export default {
     add(){
       this.dialogVisible = true
       this.form={}
+      this.form.sendername = JSON.parse(sessionStorage.getItem("user")).username
+      this.findSenderId(this.form.sendername)
     },
     mounted(){
       document.title="订单管理"
@@ -264,7 +266,7 @@ export default {
     },
     save(){
       if(this.form.id){
-        request.put("/api/order",this.form).then(res => {
+        request.put("/api/order/u",this.form).then(res => {
           console.log(res)
           if(res.code == "0"){
             ElMessage({
@@ -281,7 +283,7 @@ export default {
         })
       }
       else{
-        request.post("/api/order",this.form).then(res => {
+        request.post("/api/order/u",this.form).then(res => {
           console.log(res)
           if(res.code == "0"){
             ElMessage({

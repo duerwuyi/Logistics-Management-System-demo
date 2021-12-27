@@ -111,6 +111,8 @@ public class OrderController {
     public Result<?> userSave(@RequestBody Order order){
         User sender = userMapper.selectById(order.getSenderid());
         User reveiver = userMapper.selectById(order.getReceiverid());
+        order.setStatus("preparing");
+        order.setCheckfinish("否");
         if( sender ==null || reveiver== null ||order.getSendadd()==null||order.getReceadd()==null)
         {
             return Result.error("304","订单没有完整填写或无效用户！");
@@ -119,7 +121,7 @@ public class OrderController {
             return Result.error("306","收发者相同！");
         }
         if(sender.getAuthority().equals("user")&&reveiver.getAuthority().equals("user")){
-            orderMapper.updateById(order);
+            orderMapper.insert(order);
             return Result.success();
         }
         return Result.error("90","人员错误！");
