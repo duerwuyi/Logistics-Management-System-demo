@@ -1,4 +1,5 @@
-# springboot-vue-demo
+# Logistics-Management-System-demo
+##J2EE课程大作业
 
 ## Project setup
 ```
